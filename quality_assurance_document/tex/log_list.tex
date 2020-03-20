@@ -1,0 +1,19 @@
+\chapter{Log List}
+
+\begin{itemize}
+	\item Common \begin{itemize}
+		\item Various minor method signature and visibility adjustments
+		\item Added equals(...) and toString() methods to a couple of classes to ease logging and debugging
+	\end{itemize}
+	\item App \begin{itemize}
+		\item Added methods to a couple of store classes on the app side in order to ensure all user data is cleared from the app-database on logout as part of bugfixes
+		\item Added methods to a couple of manager classes on the app side in order to ensure all relevant background processes are stopped on logout as part of bugfixes
+		\item Added methods (getters and setters) to simplify testing of complex sections of code.
+	\end{itemize}
+	\item Server \begin{itemize}
+		\item Removed temporary workaround for the Glassfish-Injected EntityManager not persisting database changes, once the underlying issue was fixed
+		\item Added server-model dependency to EJB API (for which an implementation is shipped with Glassfish) since we need to use it for JTA and our EntityManager to work properly as part of bugfixes
+		\item Introduced CDI (Dependency Injection) into the backend/backoffice where our previous approach proved inadequate as part of bugfixes
+		\item Updated Hibernate dependency from version 5.4.0 to 5.4.1, since it contained a bugfix relevant to our server-model implementation
+	\end{itemize}
+\end{itemize}

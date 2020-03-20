@@ -1,0 +1,216 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{fullpage}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{xspace}
+
+% PDF stuff
+\ifx\pdfoutput\undefined
+\else
+    \pdfpagewidth=210mm
+    \pdfpageheight=297mm
+\fi
+
+\newif\ifbanner\bannerfalse
+\bannerfalse
+\advance\oddsidemargin-5mm
+\advance\textwidth1cm
+
+\font\manual=manfnt
+\def\shared{\noindent\llap{\manual\char'170\kern.15em}}
+
+\def\heading#1{
+    \ifhmode\par\fi
+    \removelastskip
+    \vskip1ex plus 0.5ex minus 0.3 ex%\goodbreak
+    \noindent
+    \hbox to \hsize{\bf #1\hfill}
+    \smallskip\par\nobreak}
+
+
+\def\nicefrac#1/#2{\leavevmode%
+    \raise.5ex\hbox{\the\scriptfont0 #1}%
+    \kern-.1em/\kern-.15em%
+    \lower.25ex\hbox{\the\scriptfont0 #2}}
+
+\newdimen\scalewidth
+\scalewidth=0.3\hsize 
+
+\def\xboxit#1{\hbox{\lower0.7ex\vbox{\hrule\hbox{\vrule\kern1pt
+    \vbox{\kern1pt\hbox{\strut\small #1}\kern1pt}\kern1pt\vrule}\hrule}}}
+
+\def\boxit#1{\hbox{\lower0.7ex\vbox{\hrule\hbox{\vrule\kern1pt
+    \vbox{\kern1pt\hbox to 1.4em
+    {\small\strut\hfil #1\hfil}\kern1pt}\kern1pt\vrule}\hrule}}}
+
+\def\sboxit{\hbox{\lower0.7ex\vbox{\hrule\hbox{\vrule\kern1pt
+    \vbox{\kern1pt\hbox to 1ex
+    {\small\strut\hfil}\kern1pt}\kern1pt\vrule}\hrule}}}
+
+
+\def\fiveboxes#1#2#3#4#5{\hbox to\scalewidth
+    {\boxit{#1}\hfil\boxit{#2}\hfil\boxit{#3}\hfil%
+     \boxit{#4}\hfil\boxit{#5}}}
+\def\manyboxes{\hbox to \scalewidth
+    {\sboxit\hfil\sboxit\hfil\sboxit\hfil\sboxit\hfil\sboxit\hfil%
+    \sboxit\hfil\sboxit\hfil\sboxit\hfil\sboxit\hfil\sboxit\hfil\sboxit}}
+
+
+\def\boxes{\fiveboxes{}{}{}{}{}\ignorespaces}
+
+\def\void{\boxit{}}
+
+\def\xscale#1#2{%
+    \setbox0=\hbox{\boxes}%
+    \setbox1=\hbox to \wd0{\small\strut\hfill #2 $\to$}%
+    \setbox2=\hbox to \wd0{\small\strut $\gets$ #1 \hfill}%
+    \vbox{\vbox to 0pt{\vss\box1\box2\kern2pt}\vbox{\box0}}}
+
+\def\scale#1#2{%
+    \setbox0=\hbox{\boxes}%
+    \setbox1=\hbox to \wd0{\small\strut\hfill #2 $\to$}%
+    \setbox2=\hbox to \wd0{\small\strut $\gets$ #1 \hfill}%
+    \vbox{\medskip\box1\box2\kern2pt\box0}}
+
+\def\xshortscale#1#2{%
+    \setbox0=\hbox{\boxes}%
+    \setbox1=\hbox to \wd0{\small\strut $\gets$ #1 \hfill #2 $\to$}%
+    \vbox{\vbox to 0pt{\vss\box1\kern2pt}\vbox{\box0}}}
+
+\def\shortscale#1#2{%
+    \setbox0=\hbox{\boxes}%
+    \setbox1=\hbox to \wd0{\small\strut $\gets$ #1 \hfill #2 $\to$}%
+    \vbox{\medskip\box1\kern2pt\box0}}
+
+\def\agree{\scale{strongly disagree}{agree completely}}
+\def\xagree{\xscale{strongly disagree}{agree completely}}
+\def\xquality{\xshortscale{poor}{outstanding}}
+\def\quality{\shortscale{poor}{outstanding}}
+
+\def\longquality{%
+    \setbox0=\hbox{\manyboxes}%
+    \setbox1=\hbox to \wd0{\small\strut $\gets$ poor \hfill outstanding $\to$}%
+    \vbox{\vbox to 0pt{\vss\box1\kern2pt}\vbox{\box0}}}
+
+\def\linscale{%
+    \def\tick{\vrule height 5pt\relax}%
+    \vbox{\hbox to \scalewidth{\tick\hfil\tick\hfil\tick\hfil\tick}\hrule}}
+
+\def\question#1\par#2\par{\hbox to \hsize
+    {\vbox{\hsize=0.72\hsize #1\dotfill}\quad#2\hfil}\medskip\goodbreak}
+
+\def\freequestion#1\par{#1\par\nobreak
+    \begingroup\nobreak
+    \advance\leftskip by 2pc
+    \hrule width 0pt height 1.7\baselineskip\hrulefill
+    \hrule width 0pt height 1.7\baselineskip\hrulefill
+    \par
+    \medskip
+    \endgroup
+    }
+
+\parindent0pt
+\parskip5pt plus 0.2 ex minus 0.1ex
+
+
+\def\<#1>{\textsc{#1}}
+\parindent0pt
+\parskip5pt plus 0.2 ex minus 0.1ex
+
+\begin{document} 
+\vspace*{-2cm}
+\ifbanner
+    \kern-5mm
+    \leavevmode
+    \kern-9mm\includegraphics[height=2.5cm]{dagstuhl_signet2.pdf}
+    \vskip1cm
+\else
+    \vskip3cm
+\fi
+
+\heading{BleLoc Bluetooth Device Tracker}
+
+\begin{flushleft}
+	BleLoc is an App that help you find missing Bluetooth devices.
+	
+	You can add any of your paired Bluetooth devices. 
+	
+	The app then tracks if anyone has seen it and shows you the locations on a map.
+\end{flushleft}
+\vspace{5mm}
+\heading{What to do}
+
+\begin{flushleft}
+	Please take a couple of minutes to familiarize yourself with the app.
+	
+	Try to use it with just the description above in mind, as you would any app that you've just installed.
+	
+	After that, please answer a couple of questions.
+\end{flushleft}
+\vspace{5mm}
+\heading{Questions}
+
+\heading{Account Creation}
+
+\question How difficult was it to create an account?
+\dots\par\shortscale{difficult}{easy}
+
+\question How difficult was it to log in?
+\par\boxes
+
+\question How would you rate the account creation experience overall? 
+\dots\par\shortscale{bad}{good}
+
+\shared\freequestion Do you have any comments or suggestions for account creation and login?
+
+\heading{Adding and tracking a device}
+
+\question How difficult was it to add a device?
+\dots\par\shortscale{difficult}{easy}
+
+\question Were you able to receive results? \par 
+\xboxit{yes} \xboxit{no}
+
+\question If you answered yes to the previous question: how would you rate the result display?
+\dots\par\shortscale{bad}{good}
+
+\shared\freequestion Do you have any comments or suggestions for the device management functionality?
+
+\heading{General questions}
+
+\question How would you rate the overall user experience? 
+\dots\par\shortscale{bad}{good}
+
+\question How would you rate the app design visually?
+\par\boxes
+
+\question Was all information where you expected it to be? 
+\dots\par\shortscale{mostly no}{mostly yes}
+
+\question Did you always know what to do next?
+\par\boxes
+
+
+
+\question Did you alter the app settings? \par 
+\xboxit{yes} \xboxit{no}
+
+\question If you answered yes to the previous question: how would you rate the available settings?
+\dots\par\shortscale{lacking}{complete}
+
+
+
+\shared\freequestion Which parts, screens or functionalities gave you any trouble or were difficult to use?
+
+\shared\freequestion What did you like about this app?
+
+
+
+\question Would you use this app in your daily life? \par 
+\xboxit{yes} \xboxit{no}
+
+\shared\freequestion If you answered no to the previous question: Why not?
+
+If you have any additional comments or suggestions, or run out of space, please write them on the back of this paper.
+\heading{That's all! Thank you!}
+\end{document}

@@ -1,0 +1,47 @@
+title GTC "Add Device"
+
+participant "" as User
+participant controller.AddDeviceActivity as AddDeviceAct
+participant model.scanner.Scanner as Scanner
+participant "newDevice : model.device.Device" as Device
+participant model.device.DeviceStore as DeviceStore
+
+note right of User : user pushes button\n'add device' on dash-board
+User -> AddDeviceAct : 
+activate AddDeviceAct
+    AddDeviceAct ->+ Scanner : getPairedDevices()
+    Scanner -->- AddDeviceAct : 
+    AddDeviceAct ->+ Scanner : registerScanResultEventListener(this)
+    Scanner -->- AddDeviceAct : 
+    AddDeviceAct ->+ Scanner : startScan()
+    Scanner -->- AddDeviceAct  : 
+note over AddDeviceAct : set Handler to disable scanning again
+AddDeviceAct --> User : 
+deactivate AddDeviceAct 
+
+
+note right of User : device found
+User -> Scanner : 
+activate Scanner 
+    Scanner ->+ AddDeviceAct : onDeviceFound()
+    note over AddDeviceAct : display devices
+    AddDeviceAct -->- Scanner : 
+Scanner -->- User : 
+
+
+note right of User : called by OS-Handler set\nin AddDeviceActivity
+User ->+ AddDeviceAct  : Timer event
+    AddDeviceAct  ->+ Scanner : stopScan()
+    Scanner -->- AddDeviceAct  : 
+AddDeviceAct  -->- User : 
+
+
+note right of User : user selects device and\npushes button 'add'
+User ->+ AddDeviceAct : 
+    AddDeviceAct ->*+ Device : Device(bluetoothDevice : BluetoothDevice)
+    Device -->- AddDeviceAct : 
+    AddDeviceAct ->+ DeviceStore : addDevice(newDevice)
+    DeviceStore -->- AddDeviceAct : 
+note right of User : display device details
+AddDeviceAct -->- User : 
+destroy AddDeviceAct 

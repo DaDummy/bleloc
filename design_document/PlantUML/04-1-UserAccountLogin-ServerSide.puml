@@ -1,0 +1,47 @@
+@startuml
+!include bleloc.uml-style
+
+
+title User Account - Login - Server Side
+
+
+participant ": UserAccountManagement" as UserAccountManagement
+participant ": UserAccountStore" as UserAccountStore
+participant ": Authenticator" as Authenticator
+participant "account : UserAccount" as UserAccount
+
+
+[-> UserAccountManagement : postLogin(credentials : LoginCredentials)
+activate UserAccountManagement
+	UserAccountManagement -> UserAccountStore : account = get(credentials.getName())
+	activate UserAccountStore
+	UserAccountManagement <-- UserAccountStore
+	deactivate UserAccountStore
+	
+	alt account != null
+		UserAccountManagement -> UserAccount : result = verifyPassword(credentials.getPassword())
+		activate UserAccount
+		UserAccountManagement <-- UserAccount
+		deactivate UserAccount
+		alt result == true
+			UserAccountManagement -> UserAccount : accountId = getId()
+			activate UserAccount
+			UserAccountManagement <-- UserAccount
+			deactivate UserAccount
+			
+			UserAccountManagement -> Authenticator : cookie = createCookie(accountId)
+			activate Authenticator
+			UserAccountManagement <-- Authenticator
+			deactivate Authenticator
+
+			note over UserAccountManagement : account is now logged in
+[<-- UserAccountManagement : return Response.ok().cookie(cookie).build()
+		else result == false
+[<-- UserAccountManagement : return Response.status(Response.Status.UNAUTHORIZED).build()
+		end alt
+	else account == null
+[<-- UserAccountManagement : return Response.status(Response.Status.UNAUTHORIZED).build()
+	end alt
+deactivate UserAccountManagement
+
+@enduml

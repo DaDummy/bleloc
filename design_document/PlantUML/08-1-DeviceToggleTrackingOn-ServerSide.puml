@@ -1,0 +1,76 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Device - Toggle Tracking - Server Side
+
+
+participant ": DeviceManagement" as DeviceManagement
+participant ": Authenticator" as Authenticator
+participant ": UserAccountStore" as UserAccountStore
+participant ": DeviceStore" as DeviceStore
+participant "device : Device" as Device
+participant ": DeviceHashTableManager" as DeviceHashTableManager
+participant "responsePayload : DevicePayload" as DevicePayload
+participant ": DeviceHashTableStore" as DeviceHashTableStore
+participant ": DeviceHashTable" as DeviceHashTable
+
+
+[-> DeviceManagement : postRegister(cookie : Cookie, payload : DevicePayload)
+activate DeviceManagement
+	group This happens implicitly through a custom JAX-RS request filter annotation
+		DeviceManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		DeviceManagement <-- Authenticator
+		deactivate Authenticator
+		
+		DeviceManagement -> UserAccountStore : account = get(accountId)
+		activate UserAccountStore
+		DeviceManagement <-- UserAccountStore
+		deactivate UserAccountStore
+
+		alt account == null
+			[<-- DeviceManagement : return Response.status(Response.Status.UNAUTHORIZED).build()
+		end alt
+	end group
+	
+	create Device
+	DeviceManagement -> Device : device = new Device(payload, account)
+	activate Device
+	DeviceManagement <-- Device
+	deactivate Device
+	
+	DeviceManagement -> DeviceStore : add(device)
+	activate DeviceStore
+		note over DeviceStore : device is added to DeviceStore
+		
+		DeviceStore -> DeviceHashTableManager : onAddDevice(device)
+		activate DeviceHashTableManager
+			DeviceHashTableManager -> DeviceHashTableStore : get()
+			activate DeviceHashTableStore
+			DeviceHashTableManager <-- DeviceHashTableStore
+			deactivate DeviceHashTableStore
+			
+			DeviceHashTableManager -> DeviceHashTable : add(device.getHardwareIdentifier())
+			activate DeviceHashTable
+			DeviceHashTableManager <-- DeviceHashTable : success : boolean
+			note over DeviceHashTableManager : assumption: return value is ""true"", adding succeeded
+			deactivate DeviceHashTable
+		DeviceStore <-- DeviceHashTableManager
+		deactivate DeviceHashTableManager
+	DeviceManagement <-- DeviceStore
+	deactivate DeviceStore
+	
+	create DevicePayload
+	DeviceManagement -> DevicePayload : responsePayload = new DevicePayload(device)
+	activate DevicePayload
+	DeviceManagement <-- DevicePayload
+	deactivate DevicePayload
+	
+	note over DeviceManagement : device tracking is now toggled on for this account-device combination
+[<-- DeviceManagement : return Response.ok(responsePayload).build()
+deactivate DeviceManagement
+
+
+
+@enduml

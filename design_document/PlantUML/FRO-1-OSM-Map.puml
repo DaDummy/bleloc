@@ -1,0 +1,43 @@
+@startuml
+!include bleloc.uml-style
+
+
+title GTC "Displaying locations"
+
+participant controller.MapActivity as ResultsAct
+participant "locaction : model.device.Location" as Location
+participant model.device.LocationStore as LocationStore
+participant "device : model.device.Device" as Device
+
+[-> ResultsAct
+note left : user pushes button\n'View results' on dash-board
+activate ResultsAct
+    ResultsAct -> Device : alias = getAlias()
+	activate Device
+    ResultsAct <-- Device
+	deactivate Device
+    ResultsAct -> LocationStore : locations = getByDevice(device)
+	activate LocationStore
+    ResultsAct <-- LocationStore
+	deactivate LocationStore
+    loop for each location : locations
+	    ResultsAct -> Location : getDate()
+		activate Location
+	    ResultsAct <-- Location
+		deactivate Location
+	    ResultsAct -> Location : getLocationCoordinate()
+		activate Location
+	    ResultsAct <-- Location
+		deactivate Location
+	    ResultsAct -> Location : getSignalStrength()
+		activate Location
+	    ResultsAct <-- Location
+		deactivate Location
+	    ResultsAct -> Location : markSeen()
+		activate Location
+	    ResultsAct <-- Location
+		deactivate Location
+    end
+deactivate ResultsAct
+
+@enduml

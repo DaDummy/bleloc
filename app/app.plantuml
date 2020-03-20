@@ -1,0 +1,408 @@
+@startuml
+
+title __APP's Class Diagram__\n
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class AddDeviceActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class AddDeviceActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class BuildConfig {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.controller {
+    class Controller {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class DashboardActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class DashboardActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class DeviceDetailsActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class DeviceDetailsActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class ExampleInstrumentedTest {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class LoginActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class LoginActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class MainActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class MainActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.controller {
+    package edu.kit.informatik.pse.bleloc.client.controller.account {
+      class Management {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class Network {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class Network {
+    }
+  }
+  
+
+  package android.support.v7.viewpager {
+    class R {
+    }
+  }
+  
+
+  package android.support.coreutils {
+    class R {
+    }
+  }
+  
+
+  package android.arch.core {
+    class R {
+    }
+  }
+  
+
+  package android.support.documentfile {
+    class R {
+    }
+  }
+  
+
+  package android.support.drawerlayout {
+    class R {
+    }
+  }
+  
+
+  package android.support.asynclayoutinflater {
+    class R {
+    }
+  }
+  
+
+  package android.support.loader {
+    class R {
+    }
+  }
+  
+
+  package android.support.slidingpanelayout {
+    class R {
+    }
+  }
+  
+
+  package android.support.constraint {
+    class R {
+    }
+  }
+  
+
+  package android.support.customview {
+    class R {
+    }
+  }
+  
+
+  package android.support.v4 {
+    class R {
+    }
+  }
+  
+
+  package android.arch.lifecycle {
+    class R {
+    }
+  }
+  
+
+  package android.support.graphics.drawable {
+    class R {
+    }
+  }
+  
+
+  package android.support.mediacompat {
+    class R {
+    }
+  }
+  
+
+  package android.arch.lifecycle {
+    package android.arch.lifecycle.livedata {
+      package android.arch.lifecycle.livedata.core {
+        class R {
+        }
+      }
+    }
+  }
+  
+
+  package android.support.design {
+    class R {
+    }
+  }
+  
+
+  package android.support.coordinatorlayout {
+    class R {
+    }
+  }
+  
+
+  package android.support.cursoradapter {
+    class R {
+    }
+  }
+  
+
+  package android.arch.lifecycle {
+    package android.arch.lifecycle.viewmodel {
+      class R {
+      }
+    }
+  }
+  
+
+  package androidx.versionedparcelable {
+    class R {
+    }
+  }
+  
+
+  package android.support.coreui {
+    class R {
+    }
+  }
+  
+
+  package android.arch.lifecycle {
+    package android.arch.lifecycle.livedata {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.compat {
+    class R {
+    }
+  }
+  
+
+  package android.support.print {
+    class R {
+    }
+  }
+  
+
+  package android.support.fragment {
+    class R {
+    }
+  }
+  
+
+  package android.support.interpolator {
+    class R {
+    }
+  }
+  
+
+  package android.support.swiperefreshlayout {
+    class R {
+    }
+  }
+  
+
+  package android.support.localbroadcastmanager {
+    class R {
+    }
+  }
+  
+
+  package android.support.v7.cardview {
+    class R {
+    }
+  }
+  
+
+  package android.support.v7.appcompat {
+    class R {
+    }
+  }
+  
+
+  package android.support.v7.recyclerview {
+    class R {
+    }
+  }
+  
+
+  package android.support.transition {
+    class R {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class R {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class ResultActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class ResultActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.controller {
+    package edu.kit.informatik.pse.bleloc.client.controller.scanning {
+      class ScanManager {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.controller {
+    package edu.kit.informatik.pse.bleloc.client.controller.scanning {
+      class Scanner {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class SettingsActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class SettingsActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class SettingsMenuActivityBase {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class SettingsMenuActivityBase {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class SignUpActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.android {
+    class SignUpActivity {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.client.controller {
+    package edu.kit.informatik.pse.bleloc.client.controller.scanning {
+      class Timer {
+      }
+    }
+  }
+  
+
+  AddDeviceActivity -up-|> AppCompatActivity
+  AddDeviceActivity -up-|> AppCompatActivity
+  DashboardActivity -up-|> SettingsMenuActivityBase
+  DashboardActivity -up-|> SettingsMenuActivityBase
+  DeviceDetailsActivity -up-|> AppCompatActivity
+  DeviceDetailsActivity -up-|> AppCompatActivity
+  LoginActivity -up-|> SettingsMenuActivityBase
+  LoginActivity -up-|> SettingsMenuActivityBase
+  MainActivity -up-|> Activity
+  MainActivity -up-|> Activity
+  ResultActivity -up-|> AppCompatActivity
+  ResultActivity -up-|> AppCompatActivity
+  SettingsActivity -up-|> AppCompatActivity
+  SettingsActivity -up-|> AppCompatActivity
+  SettingsMenuActivityBase -up-|> AppCompatActivity
+  SettingsMenuActivityBase -up-|> AppCompatActivity
+  SignUpActivity -up-|> AppCompatActivity
+  SignUpActivity -up-|> AppCompatActivity
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

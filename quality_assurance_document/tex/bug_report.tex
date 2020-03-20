@@ -1,0 +1,270 @@
+\chapter{Bug Report}
+\begin{enumerate}
+\item {[app] Scan results may get lost when logging out in the wrong moment (state = open)}
+\begin{itemize}	
+\item \textbf{Summary: } Downloaded scan results may get lost when reinstalling or logging out in the wrong moment.\\
+\item \textbf{Steps to reproduce: }
+\begin{itemize}
+	\item	Mark a device for tracking
+	\item	Make sure new tracking results are available for this device
+	\item	Visit the dashboard to trigger downloading these new tracking results
+	\item	Reinstall or log out of the app without visiting the dashboard again
+	\item	If done just right, the downloaded results will be lost forever
+\end{itemize}
+\item \textbf{What is the current bug behavior? }Freshly downloaded results may be lost.\\
+\item \textbf{What is the expected correct behavior? }Scan results are transferred in a safe way that prevents data loss.\\
+\item \textbf{Reason? }Scan results are reported as successfully retrieved to the server before they have been backed up to user data sync.\\
+\item \textbf{Possible fixes: }Only report scan results to be successfully retrieved once user data sync has backed them up.\\
+\end{itemize}
+
+\item {[backend] Database modifications made using an injected EntityManager are not written back to the database (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }Database modifications made using an injected EntityManager (@PersistenceContext annotation) are not written back to the database. It seems like those queries are executed, but immediately rolled back afterwards.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+	\item Sign up using the app\\
+	\item Try to login with the credentials just used to sign up\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? } Login fails.\\
+	\item \textbf{What is the expected correct behavior? } Login should be successful.\\
+	\item \textbf{Reason? } The user account record has not been persisted to the database.\\
+	\item \textbf{Possible fixes: } Refactor JAX-RS resources to be Enterprise Java Beans, so JTA and it's associated user transaction management are properly initialized and committed.\\
+\end{itemize}
+
+\item  {[backoffice] Database modifications made using an injected EntityManager are not written back to the database         (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: } Database modifications made using an injected EntityManager (@PersistenceContext annotation) are not written back to the database. It seems like those queries are executed, but immediately rolled back afterwards.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Login to the backoffice using the initial administrator account
+		\item Create a new backoffice account
+		\item Open the list of existing backoffice accounts
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? } The newly created backoffice account is not listed.\\
+	\item \textbf{What is the expected correct behavior? } The newly created backoffice account should be listed.\\
+	\item \textbf{Reason? } The backoffice account record has not been persisted to the database.\\
+	\item \textbf{Possible fixes: } Refactor Servelet resources to be Enterprise Java Beans, so JTA and it's associated user transaction management are properly initialized and committed.\\
+\end{itemize}
+
+\item {[server-model] DeviceHashTableStore's implementation requires it to be a Singleton, but it isn't use like one (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }The way the "store" currently is used does not allow it to store anything. Turn it into a singleton and use CDI to access it.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Run unit test: DeviceManagementTest::postRegister()\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? } The device is not listed in the DeviceHashTable and thus not sent to the client during filter download\\
+	\item \textbf{What is the expected correct behavior? } The device should be listed in the DeviceHashTable\\
+	\item \textbf{Reason? } DeviceHashTableStore's implementation and the way it is used are not compatible.\\
+	\item \textbf{Possible fixes: } Adjust usage of DeviceHashTableStore to match its implementation. (Have only one instance used globally)\\
+\end{itemize}
+
+
+\item {[backend] Query /backend/user/register returns wrong status code when an empty/invalid user name is supplied (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }Query /backend/user/register returns wrong status code when an empty/invalid user name is supplied.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Run unit test: UserAccountManagementTest::postRegisterEmtpyName().\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }HTTP status returned: 401 Unauthorized.\\
+	\item \textbf{What is the expected correct behavior? }HTTP status expected: 400 Bad request.\\
+	\item \textbf{Reason? } Wrong status is written to the response object.\\
+	\item \textbf{Possible fixes: }Write correct status to the response object..\\
+\end{itemize}
+
+
+\item {[backend] RequireUserAccountFilter aborts with wrong status code when authentication failed (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: } RequireUserAccountFilter aborts with wrong status code when authentication failed.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Run unit test: RequireUserAccountFilterTest::filterFail()\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }HTTP status returned: 401 Unauthorized.\\
+	\item \textbf{What is the expected correct behavior? }HTTP status expected: 403 Forbidden.\\
+	\item \textbf{Reason? }Wrong status is written to the response object.\\
+	\item \textbf{Possible fixes: }Write correct status to the response object.\\
+\end{itemize}
+
+\item {[backend] Query /backend/user/register returns wrong status code when an already taken user name is supplied (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }Query /backend/user/register returns wrong status code when an already taken user name is supplied.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Run unit test: UserAccountManagementTest::postRegisterNameTaken()\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }HTTP status returned: 401 Unauthorized.\\
+	\item \textbf{What is the expected correct behavior? }HTTP status expected: 409 Conflict.\\
+	\item \textbf{Reason? }Wrong status is written to the response object.\\
+	\item \textbf{Possible fixes: }Write correct status to the response object.\\
+\end{itemize}
+
+
+\item  {[backend] Query /backend/user/login returns wrong status code when login failed (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }The query /backend/user/login returns wrong status code when login failed.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Run unit test: UserAccountManagementTest::postLoginBadUser()
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }HTTP status returned: 401 Unauthorized.\\
+	\item \textbf{What is the expected correct behavior? }HTTP status expected: 403 Forbidden.\\
+	\item \textbf{Reason? }Wrong status is written to the response object.\\
+	\item \textbf{Possible fixes: }Write correct status to the response object.\\
+\end{itemize}
+
+
+\item {[backend] Query /backend/scan/filter always fails due to NullPointerException (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }The Query /backend/scan/filter always fails due to NullPointerException.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Run unit test: DeviceTrackingTest::getFilter().\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }The Query fails due to NullPointerException.\\
+	\item \textbf{What is the expected correct behavior? }The Query should process successfully and return the serialized form of the current scan filter.\\
+	\item \textbf{Reason? } Access to the DeviceHashTableStore is not correctly implemented.\\
+	\item \textbf{Possible fixes: } Fix access to the DeviceHashTableStore.\\
+\end{itemize}
+
+\item {[backend] Query /backend/device/register does not add device to the DeviceHashTable (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }Query /backend/device/register does not add device to the DeviceHashTable.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Run unit test: DeviceManagementTest::postRegister()\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }The device is not added to the DeviceHashTable.\\
+	\item \textbf{What is the expected correct behavior? }The device should get added to the DeviceHashTable.\\
+	\item \textbf{Reason? }The event regarding the addition of the device is not relayed to the DeviceHashTable manager class.\\
+	\item \textbf{Possible fixes: }Fix event propagation/subscription.\\
+\end{itemize}
+
+\item {[server-model] UserAccountStore.remove() throws Exception instead of performing a cascading delete (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }UserAccountStore.remove() throws an Exception instead of performing a cascading delete.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Run unit test: UserAccountManagementTest::postDeleteOk()\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }UserAccountStore.remove() throws an Exception.\\
+	\item \textbf{What is the expected correct behavior? }UserAccountStore.remove() should run successfully and trigger a cascading delete.\\
+	\item \textbf{Reason? }Faulty Annotations regarding foreign key constraint handling.\\
+	\item \textbf{Possible fixes: }Place correct Annotations regarding foreign key constraint handling.\\
+\end{itemize}
+
+
+\item {[server-model] DeviceStore::registerDeviceStoreListener(...) throws UnsupportedOperationException (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }DeviceStore::registerDeviceStoreListener(...) throws UnsupportedOperationException. It should correctly register the listener and send events to it when they occur. (Only events that originate in this very DeviceStore instance are relevant).\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Run unit test: DeviceManagementTest::postRegister()\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }DeviceStore::registerDeviceStoreListener(...) throws UnsupportedOperationException.\\
+	\item \textbf{What is the expected correct behavior? }It should correctly register the listener and send events to it when they occur.\\
+	\item \textbf{Reason? }Faulty implementation.\\
+	\item \textbf{Possible fixes: }Implement correct behaviour.\\
+\end{itemize}
+
+
+\item {[app] User data sync uploads duplicate "new" entries under certain conditions (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: } User data sync uploads entries that were initially uploaded as new again as duplicate "new" entries on every subsequent sync.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Add a device locally\\
+		\item Restart the app to trigger a sync\\
+		\item Restart the app again to trigger another sync\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }The added device that was already uploaded during the first sync is duplicated and uploaded again on the second sync.\\
+	\item \textbf{What is the expected correct behavior? }The added device should only be uploaded once as "new".\\
+	\item \textbf{Reason? }Faulty implementation of UserDataSyncManager.\\
+	\item \textbf{Possible fixes: }Fix implementation of UserDataSyncManager.\\
+\end{itemize}
+
+
+\item {[app] It's possible to register unpaired devices (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }It's possible to register unpaired devices.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Click on the plus button on the dashboard while unknown Bluetooth devices are nearby
+		\item Unpaired devices are listed and can be registered
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }It's possible to register unpaired devices.\\
+	\item \textbf{What is the expected correct behavior? }It shouldn't be possible to register unpaired devices.\\
+	\item \textbf{Reason? }Scan results are added to the list of devices in add device activity.\\
+	\item \textbf{Possible fixes: }Do not add scan results to the list of devices in add device activity.\\
+\end{itemize}
+
+
+
+\item {[app] Background scan does not filter devices before reporting them (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }Background scan does not filter devices using the bloom filter before reporting them to the backend. Resulting in a lot of unnecessary traffic and power usage.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Start the app\\
+		\item Have a few Bluetooth or BLE devices in the proximity.\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }Every spotted device is reported to the backend.\\
+	\item \textbf{What is the expected correct behavior? }Only those devices listed in the BloomFilter provided by the backend should be reported to the backend.\\
+	\item \textbf{Reason? }BloomFilter is not used (correctly).\\
+	\item \textbf{Possible fixes: }Download and use BloomFilter.\\
+\end{itemize}
+
+
+\item {[app] User data is not cleared from app on logout (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }User data is not cleared from app on logout.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Log in\\
+		\item Add a device\\
+		\item Log out\\
+		\item Log into a different account that does not have that device registered.\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }The added device is still there and is even permanently added to the second account through user data sync.\\
+	\item \textbf{What is the expected correct behavior? }Only devices registered to the respective account should be displayed when switching accounts in the app.\\
+	\item \textbf{Reason? }User data was not cleared from app on log out.\\
+	\item \textbf{Possible fixes: }Clear user data from app on log out.\\
+\end{itemize}
+
+
+
+\item {[app] User data sync does not download updates to existing entries (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }User data sync does not download updates to existing entries.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Add a device on client A\\
+		\item 	Restart the app on client A to trigger a sync\\
+		\item 	(Re)start the app on client B to trigger a sync - make sure the device is correctly downloaded\\
+		\item 	Modify the device on client A\\
+		\item 	Restart the app on client A to trigger a sync\\
+		\item 	(Re)start the app on client B to trigger a sync - the change is not applied\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }Changes on already synced devices are not synchronized to other clients.\\
+	\item \textbf{What is the expected correct behavior? }Changes on already synced devices should get synchronized to other clients.\\
+	\item \textbf{Reason? }Faulty implementation of UserDataSyncManager.\\
+	\item \textbf{Possible fixes: }Fix implementation of UserDataSyncManager.\\
+\end{itemize}
+
+
+
+\item {[server-model] database changes are not committed to database (state = closed)}
+\begin{itemize}	
+	\item \textbf{Summary: }Database changes are not committed (=written back) to the database when using a properly injected EntityManager instance. This is probably a configuration problem.\\
+	\item \textbf{Steps to reproduce: }
+	\begin{itemize}
+		\item Create a new Backoffice account and observe that despite the success message the new account does not exist.\\
+	\end{itemize}
+	\item \textbf{What is the current bug behavior? }When data is persisted to the database, the EntityManager signals success, but when reading from the database afterwards the changes are not there.\\
+	\item \textbf{What is the expected correct behavior? }When data is persisted to the database, the EntityManager signals success and the changes are returned on subsequent queries.\\
+	\item \textbf{Reason? }This is probably a configuration problem or an incompatibility between Hibernate and Glassfish.\\
+	\item \textbf{Possible fixes: }Try migrating to a different JPA implementation as it might provide different diagnostics and potentially also different behaviour. Hibernate seems to be the preferred JPA implementation on JBoss, while Glassfish has EclipseLink preinstalled.\\
+\end{itemize}
+
+\end{enumerate}

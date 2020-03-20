@@ -1,0 +1,61 @@
+@startuml
+!include bleloc.uml-style
+
+
+title <img ../img/grouplogo/Bleloc-logo_low-res.png> Scan
+
+
+participant ": PeriodicExecutor" as PeriodicExecutor
+participant ": BackgroundScanManager" as BackgroundScanManager
+participant "Android-OS" as OS
+participant "scanResult : ScanResultToUpload" as ScanResult
+participant "scanResultStore : ScanResultToUploadStore" as ScanResultStore
+participant ": Scanner" as Scanner
+
+
+note left of PeriodicExecutor : Android-System call
+[-> PeriodicExecutor
+activate PeriodicExecutor
+	PeriodicExecutor -> BackgroundScanManager : run()
+	activate BackgroundScanManager
+		BackgroundScanManager -> Scanner : startScan(duration : long)
+		activate Scanner
+		BackgroundScanManager <-- Scanner
+		deactivate Scanner
+	PeriodicExecutor <-- BackgroundScanManager
+	deactivate BackgroundScanManager
+[<-- PeriodicExecutor
+deactivate PeriodicExecutor
+
+... --   -- ""**foo**"" --   -- ...
+
+[->> Scanner
+activate Scanner
+	BackgroundScanManager <- Scanner : onDeviceFound(device : BluetoothDevice)
+	activate BackgroundScanManager
+	'note over BackgroundScanManager : encrypt data to set in ScanResult
+	note over BackgroundScanManager : ""**date : long** // get from runtime""
+	note over BackgroundScanManager : get hardware id and hash it
+	note over BackgroundScanManager : get location
+	BackgroundScanManager -> OS
+	activate OS
+	BackgroundScanManager <- OS
+	deactivate OS
+	note over BackgroundScanManager : encrypt data (date and location)
+		create ScanResult
+		BackgroundScanManager -> ScanResult : new ScanResultToUpload(date, hashedHardwareIdentifier, encryptedLocationData)
+		activate ScanResult
+		BackgroundScanManager <-- ScanResult
+		deactivate ScanResult
+		
+		BackgroundScanManager -> ScanResultToUploadStore : add(scanResult)
+		activate ScanResultToUploadStore
+		BackgroundScanManager <-- ScanResultToUploadStore
+		deactivate ScanResultToUploadStore
+	BackgroundScanManager --> Scanner
+	deactivate BackgroundScanManager
+[<- Scanner
+deactivate Scanner
+
+
+@enduml

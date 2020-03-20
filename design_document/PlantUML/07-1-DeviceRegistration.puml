@@ -1,0 +1,73 @@
+@startuml
+!include bleloc.uml-style
+
+
+title GTC "Add Device"
+
+participant controller.AddDeviceActivity as AddDeviceAct
+participant model.scanner.Scanner as Scanner
+participant "newDevice : model.device.Device" as Device
+participant model.device.DeviceStore as DeviceStore
+
+[-> AddDeviceAct
+note left : user pushes button\n'add device' on dash-board
+activate AddDeviceAct
+    AddDeviceAct -> Scanner : getPairedDevices()
+	activate Scanner
+    AddDeviceAct <-- Scanner
+	deactivate Scanner
+    AddDeviceAct -> Scanner : registerScanResultEventListener(this)
+	activate Scanner
+    AddDeviceAct <-- Scanner
+	deactivate Scanner
+    AddDeviceAct -> Scanner : startScan()
+	activate Scanner
+    AddDeviceAct <-- Scanner
+	deactivate Scanner
+note over AddDeviceAct : set Handler to disable scanning again
+[<-- AddDeviceAct
+deactivate AddDeviceAct
+
+
+[-> Scanner
+note left : device found
+activate Scanner
+    AddDeviceAct <- Scanner : onDeviceFound()
+	activate Scanner
+    note over AddDeviceAct : display devices
+    AddDeviceAct --> Scanner
+	deactivate Scanner
+[<-- Scanner
+deactivate Scanner
+
+
+[-> AddDeviceAct  : Timer event
+note left : called by OS-Handler set\nin AddDeviceActivity
+	activate AddDeviceAct
+    AddDeviceAct  -> Scanner : stopScan()
+	activate Scanner
+    Scanner -->	AddDeviceAct
+	deactivate Scanner
+[<-- AddDeviceAct
+deactivate AddDeviceAct
+
+
+[-> AddDeviceAct
+note left : user selects device and\npushes button 'add'
+activate AddDeviceAct
+	create Device
+    AddDeviceAct -> Device : Device(bluetoothDevice : BluetoothDevice)
+	activate Device
+    AddDeviceAct <-- Device
+	deactivate Device
+    AddDeviceAct -> DeviceStore : addDevice(newDevice)
+	activate DeviceStore
+    AddDeviceAct <-- DeviceStore
+	deactivate DeviceStore
+note left : display device details
+[<-- AddDeviceAct
+deactivate AddDeviceAct
+destroy AddDeviceAct
+
+
+@enduml

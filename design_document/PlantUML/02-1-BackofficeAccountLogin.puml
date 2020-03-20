@@ -1,0 +1,55 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Backoffice Account - Login
+
+
+participant ": Authentication" as Authentication
+participant ": BackofficeAccountStore" as BackofficeAccountStore
+participant ": Authenticator" as Authenticator
+participant "account : BackofficeAccount" as BackofficeAccount
+
+[-> Authentication : showLoginForm()
+activate Authentication
+	note over Authentication : return standard login page html form from template
+[<-- Authentication
+deactivate Authentication
+...
+[-> Authentication : doLogin(username : String, password : String)
+activate Authentication
+	Authentication -> BackofficeAccountStore : account = get(username)
+	activate BackofficeAccountStore
+	Authentication <-- BackofficeAccountStore
+	deactivate BackofficeAccountStore
+	
+	alt account != null
+		Authentication -> BackofficeAccount : result = verifyPassword(password)
+		activate BackofficeAccount
+		Authentication <-- BackofficeAccount
+		deactivate BackofficeAccount
+		alt result == true
+			Authentication -> BackofficeAccount : accountId = getId()
+			activate BackofficeAccount
+			Authentication <-- BackofficeAccount
+			deactivate BackofficeAccount
+			
+			Authentication -> Authenticator : cookie = createCookie(accountId)
+			activate Authenticator
+			Authentication <-- Authenticator
+			deactivate Authenticator
+
+			note over Authentication : account is now logged in
+[<-- Authentication : return Response.seeOther("/").cookie(cookie).build()
+		else result == false
+			note over Authentication : return standard login page html form from template with wrong username/password error message
+[<-- Authentication
+		end alt
+	else account == null
+		note over Authentication : return standard login page html form from template with wrong username/password error message
+[<-- Authentication
+	end alt
+deactivate Authentication
+
+
+@enduml

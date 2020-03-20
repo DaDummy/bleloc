@@ -1,0 +1,17 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Backoffice Account - Logout
+
+
+participant ": Authentication" as Authentication
+
+[-> Authentication : doLogout()
+activate Authentication
+	note over Authentication : clear the login cookie and redirect to the home page
+[<-- Authentication : return Response.seeOther("/").cookie(cookieWithMaxAge0).build()
+deactivate Authentication
+
+
+@enduml

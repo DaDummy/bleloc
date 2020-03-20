@@ -1,0 +1,72 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Backoffice - User Account - Lookup
+
+
+participant ": UserAccountManagement" as UserAccountManagement
+participant ": BackofficeAccountStore" as BackofficeAccountStore
+participant ": Authenticator" as Authenticator
+participant ": UserAccountStore" as UserAccountStore
+
+[-> UserAccountManagement : showList(cookie : Cookie, pageNumber : int)
+activate UserAccountManagement
+	group This happens implicitly through a custom request filter annotation
+		UserAccountManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		UserAccountManagement <-- Authenticator
+		deactivate Authenticator
+		
+		UserAccountManagement -> BackofficeAccountStore : account = get(accountId)
+		activate BackofficeAccountStore
+		UserAccountManagement <-- BackofficeAccountStore
+		deactivate BackofficeAccountStore
+
+		alt account == null
+			[<-- UserAccountManagement : return Response.seeOther("/auth/login").build()
+		end alt
+	end group
+
+	UserAccountManagement -> UserAccountStore : accountList = list((pageNumber - 1) * PageSize, PageSize)
+	activate UserAccountStore
+	UserAccountManagement <-- UserAccountStore
+	deactivate UserAccountStore
+	
+	note over UserAccountManagement : return backoffice account list HTML page template filled with entries from accountList
+[<-- UserAccountManagement
+deactivate UserAccountManagement
+...
+[-> UserAccountManagement : showDetails(cookie : Cookie, username : String)
+activate UserAccountManagement
+	group This happens implicitly through a custom request filter annotation
+		UserAccountManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		UserAccountManagement <-- Authenticator
+		deactivate Authenticator
+		
+		UserAccountManagement -> BackofficeAccountStore : account = get(accountId)
+		activate BackofficeAccountStore
+		UserAccountManagement <-- BackofficeAccountStore
+		deactivate BackofficeAccountStore
+
+		alt account == null
+			[<-- UserAccountManagement : return Response.seeOther("/auth/login").build()
+		end alt
+	end group
+
+	UserAccountManagement -> UserAccountStore : otherAccount = get(username)
+	activate UserAccountStore
+	UserAccountManagement <-- UserAccountStore
+	deactivate UserAccountStore
+	
+	alt otherAccount != null
+		note over UserAccountManagement : return standard backoffice account details page html form from template with data from otherAccount
+[<-- UserAccountManagement
+	else otherAccount == null
+[<--  UserAccountManagement : return Response.status(Response.Status.NOT_FOUND).build()
+	end alt
+deactivate UserAccountManagement
+
+
+@enduml

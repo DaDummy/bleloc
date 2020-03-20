@@ -1,0 +1,158 @@
+\chapter{Project Schedule (planned)}
+\begin{adjustbox}{totalheight=\textheight-2\baselineskip}
+\begin{ganttchart}{10}{29}
+\gantttitle{Day}{20} \\
+\gantttitlelist{10,...,29}{1} \\
+\ganttgroup{Phase 1}{10}{14} \\
+\ganttbar{Runnable app and backend}{10}{12} \\
+\ganttbar{Server-side Authentication}{10}{14} \\
+\ganttbar{Server-side Persistence: 1st store}{10}{14} \\
+\ganttbar{Payload classes}{10}{14} \\
+\ganttbar{Serve pages in backoffice}{10}{14} \\
+\ganttbar{Integrate BloomFilter}{10}{14} \\
+\ganttgroup{Phase 2}{15}{21} \\
+\ganttbar{Clean-up project}{15}{15} \\
+\ganttbar{Server-side Persistence}{15}{18} \\
+\ganttbar{Remaining parts in Server model}{15}{20} \\
+\ganttbar{Integrate JS Graph into Statistics page}{15}{20} \\
+\ganttbar{backoffice.controller (Initial account)}{15}{18} \\
+\ganttbar{Remaining backoffice}{15}{20} \\
+\ganttbar{backend.controller}{15}{20} \\
+\ganttbar{Set up on KIT server}{17}{21} \\
+\ganttbar{client.model.scanning}{15}{21} \\
+\ganttbar{client.model.device}{15}{21} \\
+\ganttbar{client.model.devicehashtable}{15}{21} \\
+\ganttgroup{Phase 3}{22}{29} \\
+\ganttbar{client.model.connectivity}{22}{29} \\
+\ganttbar{client.model.serialize}{22}{29} \\
+\ganttbar{client.model.settings}{22}{29} \\ % missing methods?
+\ganttbar{client.model.user}{22}{29} \\
+\ganttbar{client.model.utils.Encryptor}{22}{29} \\
+\ganttbar{client.model.utils.PeriodicExecutor}{22}{29} \\
+\ganttbar{client.controller.activities and views}{22}{29}
+\ganttlink{elem3}{elem9}
+\ganttlink{elem3}{elem15}
+\ganttlink{elem5}{elem11}
+\ganttlink{elem5}{elem13}
+\ganttlink{elem14}{elem20}
+\ganttlink{elem15}{elem20}
+\ganttlink{elem14}{elem21}
+\ganttlink{elem15}{elem21}
+\end{ganttchart}
+\end{adjustbox}
+\chapter{Project Schedule (real)}
+\begin{adjustbox}{totalheight=\textheight-2\baselineskip}
+\begin{tabular}{ l l r r l r }
+ & Assigned to & Assigned on & Deadline & Done by & Done Date \\
+backend.controller.DeviceHashTableInitializer & Christoffer & 2019-01-15 & 2019-01-21 & multiple &  \\
+backend.controller.DeviceManagement & Christoffer & 2019-01-15 & 2019-01-21 & Christoffer & 2019-01-21 \\
+backend.controller.DeviceTracking & Christoffer & 2019-01-15 & 2019-01-21 & Christoffer & 2019-01-21 \\
+backend.controller.UserAccountManagement & Christoffer & 2019-01-15 & 2019-01-21 & Christoffer & 2019-01-14 \\
+backend.controller.UserDataSynchronization & Christoffer & 2019-01-15 & 2019-01-21 & Christoffer & 2019-01-21 \\
+backoffice.Authentication & Florian & 2019-01-15 & 2019-01-21 & Florian & 2019-01-26 \\
+backoffice.BackofficeAccountManagement & Florian & 2019-01-15 & 2019-01-21 & Florian & 2019-01-29 \\
+backoffice.controller.BackofficeAccountInitializer & Florian & 2019-01-15 & 2019-01-21 & Christoffer & 2019-01-27 \\
+backoffice.Home & Florian & 2019-01-15 & 2019-01-21 & Florian & 2019-01-29 \\
+backoffice.Settings & Florian & 2019-01-15 & 2019-01-21 & Florian & 2019-02-05 \\
+backoffice.Statistics & Florian & 2019-01-15 & 2019-01-21 & - &  \\
+backoffice.UserAccountManagement & Florian & 2019-01-15 & 2019-01-21 & Florian & 2019-01-30 \\
+cdi.AuthenticatedBackofficeAccountProducer & Christoffer & 2019-01-10 & 2019-01-15 & Christoffer & 2019-01-19 \\
+cdi.AuthenticatedUserAccountProducer & Christoffer & 2019-01-10 & 2019-01-15 & Christoffer & 2019-01-19 \\
+cdi.BackofficeAccountProxy & Christoffer & 2019-01-10 & 2019-01-15 & Christoffer & 2019-01-19 \\
+cdi.UserAccountProxy & Christoffer & 2019-01-10 & 2019-01-15 & Christoffer & 2019-01-19 \\
+client.controller.activities.AddDeviceActivity & Anastasia & 2019-01-22 & 2019-01-28 & Lukas & 2019-02-02 \\
+client.controller.activities.DashboardActivity & Lukas & 2019-02-02 & 2019-02-05 & Lukas & 2019-02-02 \\
+client.controller.activities.DeviceDetailsActivity & Anastasia & 2019-01-29 & 2019-02-02 & Lukas & 2019-02-02 \\
+client.controller.activities.LoginActivity & Lukas & 2019-01-28 & 2019-01-28 & Lukas & 2019-01-28 \\
+client.controller.activities.MainActivity & Lukas & 2019-01-29 & 2019-02-02 & Lukas & 2019-01-28 \\
+client.controller.activities.MapActivity & Lukas & 2019-01-22 & 2019-01-28 & Lukas & 2019-01-27 \\
+client.controller.activities.ResultActivity & Lukas & 2019-01-29 & 2019-02-02 & Lukas & 2019-01-31 \\
+client.controller.activities.SettingsActivity &  &  &  & Lukas & 2019-01-31 \\
+client.controller.activities.SettingsMenuActivityBase &  &  &  & Lukas & 2019-01-12 \\
+client.controller.activities.SignUpActivity & Lukas & 2019-01-26 & 2019-01-28 & Lukas & 2019-01-29 \\
+client.controller.AppDatabase & Elena &  &  & Christoffer & 2019-01-28 \\
+client.controller.Context & Lukas &  &  & Lukas & 2019-01-29 \\
+client.controller.ScanService & Lukas &  &  & Lukas & 2019-02-04 \\
+client.exceptions.BlelocException &  &  &  & - &  \\
+client.exceptions.BluetoothConnectivityException &  &  &  & - &  \\
+client.exceptions.NetworkConnectivityException &  &  &  & - &  \\
+client.model.connectivity.requests.BackendRequest &  &  &  & Lukas & 2019-01-30 \\
+client.model.connectivity.requests.BloomFilterDownloadRequest &  &  &  & Lukas & 2019-02-04 \\
+client.model.connectivity.requests.ChangePasswordRequest &  &  &  & Lukas & 2019-02-03 \\
+client.model.connectivity.requests.DeleteAccountRequest &  &  &  & Lukas & 2019-01-29 \\
+client.model.connectivity.requests.DeregisterTrackedDeviceRequest &  &  &  & Lukas & 2019-02-05 \\
+client.model.connectivity.requests.ListTrackedDevicesRequest &  &  &  & Lukas & 2019-02-05 \\
+client.model.connectivity.requests.LoginRequest &  &  &  & Lukas & 2019-01-29 \\
+client.model.connectivity.requests.RegisterTrackedDeviceRequest &  &  &  & Lukas & 2019-02-05 \\
+client.model.connectivity.requests.RegisterUserRequest &  &  &  & Lukas & 2019-01-29 \\
+client.model.connectivity.requests.RequestManager &  &  &  & Lukas & 2019-01-30 \\
+client.model.connectivity.requests.ScanResultConfirmDownloadRequest &  &  &  & Lukas & 2019-02-05 \\
+client.model.connectivity.requests.ScanResultDownloadRequest &  &  &  & Lukas & 2019-02-05 \\
+client.model.connectivity.requests.ScanResultUploadRequest &  &  &  & Lukas & 2019-02-04 \\
+client.model.connectivity.requests.UserDataSyncAddRequest &  &  &  & Christoffer & 2019-02-05 \\
+client.model.connectivity.requests.UserDataSyncGetRequest &  &  &  & Christoffer & 2019-02-05 \\
+client.model.connectivity.requests.UserDataSyncIndexRequest &  &  &  & Christoffer & 2019-02-05 \\
+client.model.connectivity.requests.UserDataSyncUpdateRequest &  &  &  & Christoffer & 2019-02-05 \\
+client.model.connectivity.ScanResultDownloadManager &  &  &  & Lukas & 2019-02-05 \\
+client.model.connectivity.TrackingStateManager & Elena & 2019-01-29 & 2019-02-02 & Lukas & 2019-02-05 \\
+client.model.connectivity.UserDataSyncManager & Christoffer & 2019-01-29 & 2019-02-02 & Christoffer & 2019-02-05 \\
+client.model.device.Device & Elena & 2019-01-15 & 2019-01-22 & Elena & 2019-02-02 \\
+client.model.device.DeviceTrackingState & Elena & 2019-01-15 & 2019-01-22 & Elena & 2019-02-02 \\
+client.model.devicehashtable.DeviceHashTableStore & Elena & 2019-01-15 & 2019-01-22 & Lukas & 2019-02-04 \\
+client.model.device.Location & Elena & 2019-01-15 & 2019-01-22 & multiple &  \\
+client.model.device.SynchronizableObject & Elena & 2019-01-15 & 2019-01-22 & multiple &  \\
+client.model.device.SynchronizableObjectReference & Elena & 2019-01-15 & 2019-01-22 & multiple &  \\
+client.model.device.TrackingStateConverter & Elena & 2019-01-15 & 2019-01-22 & Elena & 2019-02-03 \\
+client.model.device.VendorDatabase &  &  &  & Lukas & 2019-02-04 \\
+client.model.scanning.BackgroundScanManager & Anastasia & 2019-01-15 & 2019-01-22 & Lukas & 2019-02-04 \\
+client.model.scanning.Scanner & Anastasia & 2019-01-15 & 2019-01-22 & Lukas & 2019-02-03 \\
+client.model.scanning.ScanResultToUpload & Anastasia & 2019-01-15 & 2019-01-22 & Christoffer & 2019-01-28 \\
+client.model.scanning.ScanResultUploadManager & Anastasia & 2019-01-15 & 2019-01-22 & Lukas & 2019-02-04 \\
+client.model.serialize.DeviceSerializer & Christoffer & 2019-01-29 & 2019-02-02 & Christoffer & 2019-02-05 \\
+client.model.serialize.LocationSerializer & Christoffer & 2019-01-29 & 2019-02-02 & Christoffer & 2019-02-05 \\
+client.model.serialize.UserDataSerializationManager & Christoffer & 2019-01-29 & 2019-02-02 & Christoffer & 2019-02-05 \\
+client.model.serialize.UserDataSerializer & Christoffer & 2019-01-29 & 2019-02-02 & Christoffer & 2019-02-05 \\
+client.model.settings.Settings &  &  &  & Lukas & 2019-02-04 \\
+client.model.typeconverters.DateConverter & Elena &  &  & Christoffer & 2019-01-28 \\
+client.model.typeconverters.HashedMacAddressConverter & Elena &  &  & Christoffer & 2019-01-28 \\
+client.model.typeconverters.MacAdressConverter & Elena &  &  & Elena & 2019-02-02 \\
+client.model.user.AuthenticationManager & Lukas & 2019-01-26 & 2019-01-28 & Lukas & 2019-01-30 \\
+client.model.user.UserData & Elena & 2019-01-26 & 2019-01-28 & Lukas & 2019-01-31 \\
+client.model.utils.Encryptor & Lukas & 2019-01-22 & 2019-01-28 & Lukas & 2019-01-28 \\
+client.model.utils.PeriodicExecutor & Anastasia & 2019-01-22 & 2019-01-28 & Anastasia & 2019-01-29 \\
+model.BackofficeAccount & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-01-25 \\
+model.BackofficeAccountStore & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-01-25 \\
+model.Device & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-01-01 \\
+model.DeviceHashTable & Lukas & 2019-01-10 & 2019-01-19 & Lukas & 2019-01-17 \\
+model.DeviceHashTableManager & Elena & 2019-01-10 & 2019-01-19 & Lukas & 2019-02-04 \\
+model.DeviceHashTableStore & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-02-02 \\
+model.DeviceStore & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-02-01 \\
+model.GeneralStore & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-01-26 \\
+model.HashedMacAddress &  &  &  & multiple &  \\
+model.PasswordUtil &  &  &  & Elena & 2019-01-21 \\
+model.settings.Setting & Florian &  &  & Florian & 2019-02-05 \\
+model.settings.SettingsGroup & Florian &  &  & Florian & 2019-02-05 \\
+model.settings.SettingsGroupStore & Florian &  &  & Florian & 2019-02-05 \\
+model.settings.SettingStore & Florian &  &  & Florian & 2019-02-05 \\
+model.TrackingResult & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-01-25 \\
+model.TrackingResultStore & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-02-02 \\
+model.UserAccount & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-01-16 \\
+model.UserAccountStore & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-01-16 \\
+model.UserDataEntry & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-01-22 \\
+model.UserDataStore & Elena & 2019-01-10 & 2019-01-19 & Elena & 2019-01-24 \\
+model.WebTokenAuthenticator & Christoffer & 2019-01-10 & 2019-01-15 & Christoffer & 2019-01-15 \\
+model.WebTokenAuthenticatorFactory & Christoffer & 2019-01-10 & 2019-01-15 & Christoffer & 2019-01-14 \\
+payload.ChangePasswordRequestPayload & Anastasia & 2019-01-10 & 2019-01-15 & Anastasia & 2019-01-13 \\
+payload.Device & Anastasia & 2019-01-10 & 2019-01-15 & Elena & 2019-02-02 \\
+payload.DeviceHashTablePayload & Anastasia & 2019-01-10 & 2019-01-15 & Anastasia & 2019-01-13 \\
+payload.DeviceIndexPayload & Anastasia & 2019-01-10 & 2019-01-15 & Anastasia & 2019-01-13 \\
+payload.DevicePayload & Anastasia & 2019-01-10 & 2019-01-15 & Anastasia & 2019-01-13 \\
+payload.DeviceTrackingResultPayload & Anastasia & 2019-01-10 & 2019-01-15 & Anastasia & 2019-01-13 \\
+payload.LoginCredentialsPayload & Anastasia & 2019-01-10 & 2019-01-15 & Anastasia & 2019-01-13 \\
+payload.UserDataIndexEntry & Anastasia & 2019-01-10 & 2019-01-15 & Anastasia & 2019-01-13 \\
+payload.UserDataIndexPayload & Anastasia & 2019-01-10 & 2019-01-15 & Anastasia & 2019-01-13 \\
+payload.UserDataPayload & Anastasia & 2019-01-10 & 2019-01-15 & Anastasia & 2019-01-13 \\
+requestfilters.RequireBackofficeAccountFilter & Christoffer & 2019-01-10 & 2019-01-15 & Christoffer & 2019-01-14 \\
+requestfilters.RequireUserAccountFilter & Christoffer & 2019-01-10 & 2019-01-15 & Christoffer & 2019-01-14 \\
+\end{tabular}
+\end{adjustbox}

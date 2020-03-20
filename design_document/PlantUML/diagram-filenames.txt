@@ -1,0 +1,48 @@
+	01-1-InitalBackofficeAccountCreation
+
+	02-1-BackofficeAccountLogin
+	02-2-BackofficeAccountLogout
+
+	03-1-UserAccountRegistration
+	03-1-UserAccountRegistration-ServerSide
+	03-2-UserAccountDeletion
+	03-2-UserAccountDeletion-ServerSide
+
+	04-1-UserAccountLogin
+	04-1-UserAccountLogin-ServerSide
+	04-2-UserAccountLogout
+
+	05-1-BackofficeAccountCreation
+	05-2-BackofficeAccountLookup
+	05-3-BackofficeAccountDeletion
+
+	06-1-BackofficeUserAccountCreation
+	06-2-BackofficeUserAccountLookup
+	06-3-BackofficeUserAccountDeletion
+
+	07-1-DeviceRegistration
+	07-2-DeviceList
+	07-3-DeviceDetails
+	07-4-DeviceDeregistration
+
+	08-1-DeviceToggleTrackingOn
+	08-1-DeviceToggleTrackingOn-ServerSide
+	08-2-DeviceToggleTrackingOff
+	08-2-DeviceToggleTrackingOff-ServerSide
+
+09-1-Scan
+09-2-LocationReport
+	09-2-LocationReport-ServerSide
+
+10-1-LocationReceive
+	10-1-LocationReceive-ServerSide-Download
+	10-1-LocationReceive-ServerSide-ConfirmDownload
+	10-2-LocationView
+
+	11-1-UserDataSync
+	11-1-UserDataSync-ServerSide-Add
+	11-1-UserDataSync-ServerSide-GetIndex
+	11-1-UserDataSync-ServerSide-Get
+	11-1-UserDataSync-ServerSide-Update
+
+	FRO-1-OSM-Map.puml

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+    <jdbc-connection-pool
+        name="blelocPool"
+        res-type="javax.sql.DataSource"
+        datasource-classname="org.apache.derby.jdbc.ClientDataSource"
+        non-transactional-connections="true"
+    >
+        <property name="serverName" value="localhost"/>
+        <property name="portNumber" value="1527"/>
+        <property name="databaseName" value="bleloc"/>
+        <property name="User" value="app"/>
+        <property name="Password" value="app"/>
+        <property name="connectionAttributes" value=";create=true" />
+    </jdbc-connection-pool>
+
+    <jdbc-resource enabled="true" jndi-name="java:app/jdbc/blelocDB" object-type="user" pool-name="blelocPool">
+        <description/>
+    </jdbc-resource>
+</resources>

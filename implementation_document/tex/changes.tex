@@ -1,0 +1,24 @@
+\chapter{Changes}
+\begin{itemize}
+\item Missing methods in bleloc.client.model.utils.Encryptor \\ decryptScanResult in addition to encryptScanResult \\ Reason: this code obviously belongs to Encryptor, needs to be callable
+\item Missing method isTracked method in TrackingStateManager \\ Reason: this code obviously belongs to TrackingStateManager, needs to be callable
+\item Controller:
+\begin{itemize}
+\item Annotation, Request Filter and CDI Bean classes added
+\item Annotations and annotated parameters added in request methods
+\item Reason: This concept was mentioned in design document, but the required classes were not specified.
+\item Return type in request methods changed to pass objects to FreeMarker templates
+\item Reason: Template needs to be filled with data.
+%\item ExceptionMapper added to return better status codes
+\end{itemize}
+\item getSalt renamed to generateRandomSalt \\ Reason: Stress new salt is generated every call. Clear naming is important especially in cryptographic code.
+\item Added GeneralStore and AbstractEntry base class \\ Reason: Much more code needed than expected in design phase. Avoid code duplication.
+\item Added Helper classes for ORM (like TypeConverter)
+\item Stores and entities changed to meet Room's and Hibernate's expectations
+\item Removed Observer as we use EventListeners
+\item Implement Listeners where needed
+\item Pass Contexts around \\ Reason: Most of Android APIs need Context objects
+\item Added more database queries
+\item Added settings
+\item Removed SettingsController \\ Reason: Android's SharedPreferences does exactly the same but supports more types than Strings
+\end{itemize}

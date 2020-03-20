@@ -1,0 +1,57 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Location Report - Server Side
+
+
+participant ": DeviceTracking" as DeviceTracking
+participant ": Authenticator" as Authenticator
+participant ": UserAccountStore" as UserAccountStore
+participant ": DeviceStore" as DeviceStore
+participant ": TrackingResultStore" as TrackingResultStore
+participant "data : TrackingResult" as TrackingResult
+
+
+[-> DeviceTracking : postResult(cookie : Cookie, payload : DeviceTrackingResultPayload)
+activate DeviceTracking
+	group This happens implicitly through a custom JAX-RS request filter annotation
+		DeviceTracking -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		DeviceTracking <-- Authenticator
+		deactivate Authenticator
+		
+		DeviceTracking -> UserAccountStore : account = get(accountId)
+		activate UserAccountStore
+		DeviceTracking <-- UserAccountStore
+		deactivate UserAccountStore
+
+		alt account == null
+			[<- DeviceTracking : return Response.status(Response.Status.UNAUTHORIZED).build()
+		end alt
+	end group
+	
+	DeviceTracking -> DeviceStore : list : Collection<Device> = get(payload.getHashedHardwareIdentifier())
+	activate DeviceStore
+	DeviceTracking <- DeviceStore
+	deactivate DeviceStore
+	
+	loop : for each device : Device in list
+		create TrackingResult
+		DeviceTracking -> TrackingResult : data = new TrackingResult(payload, device.getUser())
+		activate TrackingResult
+		DeviceTracking <-- TrackingResult
+		deactivate TrackingResult
+		
+		DeviceTracking -> TrackingResultStore : add(data)
+		activate TrackingResultStore
+		DeviceTracking <-- TrackingResultStore
+		deactivate TrackingResultStore
+	end loop
+
+[<-- DeviceTracking : return Response.ok().build()
+deactivate DeviceTracking
+
+
+
+@enduml

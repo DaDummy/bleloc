@@ -1,0 +1,360 @@
+@startuml
+
+title __BACKEND's Class Diagram__\n
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class Administrator {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backoffice {
+    class AdministratorManagement {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class AdministratorStore {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      interface Authenticatable {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backoffice {
+    class Authentication {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      interface Authenticator {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      interface AuthenticatorFactory {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    class BackendApplication {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backoffice {
+    class BackofficeApplication {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class BloomFilter {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class BloomFilterStore {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class BloomFilterUpdater {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class ChangePasswordRequestPayload {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class Device {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class Device {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class DeviceListResponsePayload {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.client {
+      class DeviceManagement {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class DeviceRegisterResponsePayload {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class DeviceStore {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.client {
+      class DeviceTracking {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class DeviceTrackingResultIdList {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class DeviceTrackingResultList {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class HashedMacAddress {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    class HelloWorldResource {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backoffice {
+    class Home {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class LoginCredentials {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      abstract class Payload {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class ResponsePayload {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class ScanData {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class ScanDataStore {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backoffice {
+    class Settings {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backoffice {
+    class Statistics {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class User {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.client {
+      class UserAccountManagement {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class UserDataEntry {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class UserDataStore {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.client {
+      class UserDataSynchronization {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backoffice {
+    class UserManagement {
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class UserStore {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class UserSyncData {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.api.payload {
+      class UserSyncDataIndexResponsePayload {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class WebtokenAuthenticator {
+      }
+    }
+  }
+  
+
+  package edu.kit.informatik.pse.bleloc.backend {
+    package edu.kit.informatik.pse.bleloc.backend.model {
+      class WebtokenAuthenticatorFactory {
+      }
+    }
+  }
+  
+
+  Administrator -up-|> Authenticatable
+  BackendApplication -up-|> Application
+  BackofficeApplication -up-|> ResourceConfig
+  BloomFilter -up-|> Payload
+  ChangePasswordRequestPayload -up-|> Payload
+  Device -up-|> Payload
+  Device o-- User : user
+  Device o-- HashedMacAddress : hardwareIdentifier
+  DeviceListResponsePayload -up-|> ResponsePayload
+  DeviceRegisterResponsePayload -up-|> ResponsePayload
+  DeviceTrackingResultIdList -up-|> Payload
+  DeviceTrackingResultList -up-|> Payload
+  LoginCredentials -up-|> Payload
+  ResponsePayload -up-|> Payload
+  ScanData o-- Device : device
+  User -up-|> Authenticatable
+  UserSyncData -up-|> Payload
+  UserSyncDataIndexResponsePayload -up-|> ResponsePayload
+  WebtokenAuthenticator -up-|> Authenticator
+  WebtokenAuthenticatorFactory -up-|> AuthenticatorFactory
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

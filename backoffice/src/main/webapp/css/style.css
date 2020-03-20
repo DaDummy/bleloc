@@ -1,0 +1,14 @@
+.lever {
+    float: right;
+}
+
+.settings{
+    padding-left: 0 !important;
+
+}
+
+.settings h5{
+    height: 3rem;
+    margin: 0 0 8px 0;
+    padding: 0;
+}

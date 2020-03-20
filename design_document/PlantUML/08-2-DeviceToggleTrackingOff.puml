@@ -1,0 +1,60 @@
+@startuml
+!include bleloc.uml-style
+
+
+title GTC Toggle Device Tracking 'OFF'
+
+participant ": DeviceDetailsActivity" as DevDetAct
+participant ": connectivity.TrackingStateManager" as Manager
+participant "deviceState : DeviceTrackingState" as State
+participant DeviceTrackingStateStore as Store
+participant "trackingRequest : DeregisterTrackedDeviceRequest" as Request
+
+
+[-> DevDetAct
+note left : user pushes button\n'Toggle Tracking'
+activate DevDetAct
+    DevDetAct -> Manager : toggleDeviceTrackingState(device : Device, tracking : boolean)
+	activate Manager
+		create State
+        Manager -> State : new DeviceTrackingState(device, TrackingState.PENDING_STOP_TRACKING)
+		activate State
+        Manager <-- State
+		deactivate State
+        destroy State
+		
+        Manager -> Store : update(deviceState)
+		activate Store
+        Manager <-- Store
+		deactivate Store
+		
+		create Request
+        Manager -> Request : new DeregisterTrackedDeviceRequest(hashedHardWareIdentifier : byte[])
+		activate Request
+        Manager <-- Request
+		deactivate Request
+        note over Manager : register EventListener
+        Manager ->> Request : send()
+		activate Request
+        
+		... --   -- ""**Wait for Server Response**"" --   -- ...
+
+        Manager <<- Request : onReceiveDeregisterTrackedDeviceResult(response : ResponsePayload)
+        destroy Request
+        note over Manager : request succeeded
+		create State
+        Manager -> State : new DeviceTrackingState(device, TrackingState.REGISTERED)
+		activate State
+        Manager <-- State
+        destroy State
+        Manager -> Store : update(deviceState)
+		activate Store
+        Manager <-- Store
+		deactivate Store
+    Manager --> DevDetAct
+	deactivate Manager
+[<-- DevDetAct
+deactivate DevDetAct
+
+
+@enduml

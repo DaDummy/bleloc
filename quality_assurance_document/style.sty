@@ -1,0 +1,62 @@
+\ProvidesPackage{style}
+\usepackage[utf8]{inputenc} % use utf8 file encoding for TeX sources
+\usepackage[T1]{fontenc} % avoid garbled Unicode text in pdf
+
+\usepackage{hyperref} % detailed hyperlink/pdf configuration
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+\usepackage{csquotes} % provides \enquote{} macro for "quotes"
+\usepackage{graphicx}       % provides commands for including figures
+\usepackage{enumitem}
+\usepackage{eurosym}
+\usepackage[nonumberlist,toc,section=chapter,nopostdot]{glossaries}     % provides glossary commands
+\setglossarystyle{altlist}
+\usepackage{pgfgantt}
+\usepackage{adjustbox}
+
+\usepackage{color}
+\usepackage[headings]{fullpage}
+\usepackage{listings}
+\lstset{language=Java,breaklines=true}
+
+\newcommand{\entityintro}[3]{%
+  \hbox to \hsize{%
+    \vbox{%
+      \hbox to .2in{}%
+    }%
+    {\bf  #1}%
+    \dotfill\pageref{#2}%
+  }
+  \makebox[\hsize]{%
+    \parbox{.4in}{}%
+    \parbox[l]{5in}{%
+      \vspace{1mm}%
+      #3%
+      \vspace{1mm}%
+    }%
+  }%
+}
+\newcommand{\refdefined}[1]{
+\expandafter\ifx\csname r@#1\endcsname\relax
+\relax\else
+{$($in \ref{#1}, page \pageref{#1}$)$}\fi}
+\date{null}
+\chardef\textbackslash=`\\
+
+% Formatter for user-name/password/...
+\newcommand{\raw}[1]{\texttt{\textbf{#1}}}
+
+
+\DeclareUnicodeCharacter{1F36A}{\textleaf}
+
+\usepackage{pdfpages}
+
+\setlength{\parskip}{.5em}
+
+\usepackage{pgfplots}
+\selectcolormodel{gray} 

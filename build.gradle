@@ -1,0 +1,78 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+	repositories {
+		google()
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.android.tools.build:gradle:3.3.1'
+
+		// NOTE: Do not place your application dependencies here; they belong
+		// in the individual module build.gradle files
+	}
+}
+
+allprojects {
+	repositories {
+		google()
+		jcenter()
+		mavenCentral()
+	}
+
+	['test', 'check'].each { taskName ->
+		tasks.matching { it.name == taskName }.all { t ->
+			tasks.create("${taskName}AlwaysRun") {
+				group = 'verification'
+				dependsOn clean, t
+			}
+		}
+	}
+}
+
+subprojects { sp ->
+	plugins.withType(JavaPlugin) {
+		test {
+			ignoreFailures true
+		}
+	}
+
+	if (plugins.hasPlugin('android')) {
+		debug {
+			testCoverageEnabled = true
+		}
+	}
+
+	['build', 'clean', 'undeploy', 'deploy', 'redeploy', 'test', 'check'].each { taskName ->
+		tasks.matching { it.name == taskName }.all { task ->
+			rootProject."${taskName}".dependsOn task
+		}
+	}
+}
+
+task build {
+	group = 'build'
+}
+task clean(type: Delete) {
+	group = 'build'
+	delete rootProject.buildDir
+}
+
+task undeploy {
+	group = 'deployment'
+}
+task deploy {
+	group = 'deployment'
+}
+task redeploy {
+	group = 'deployment'
+}
+
+task test {
+	group = 'verification'
+}
+task check {
+	group = 'verification'
+}

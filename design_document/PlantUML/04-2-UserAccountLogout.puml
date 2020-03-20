@@ -1,0 +1,30 @@
+@startuml
+!include bleloc.uml-style
+
+
+title User Account Logout
+
+
+participant ": SettingsActivity" as Settings
+participant ": AuthenticationManager" as AuthenticationManager
+participant ": UserData" as UserData
+
+
+note left of Settings : the user account section is displayed
+[-> Settings
+activate Settings
+	note right of Settings : user activates button 'Logout'
+	Settings -> AuthenticationManager : logout()
+	activate AuthenticationManager
+		AuthenticationManager -> UserData : setCookie("")
+		activate UserData
+		AuthenticationManager <-- UserData
+		deactivate UserData
+	Settings <-- AuthenticationManager : ""true""
+	deactivate AuthenticationManager
+note left of Settings : the user is logged out and LoginActivity is displayed
+[<-- Settings
+deactivate Settings
+
+
+@enduml

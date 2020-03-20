@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">BLELoc</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_sign_up">Sign Up</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_add_device">Add Device</string>
+    <string name="title_activity_device_details">Device Details</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_result">Results</string>
+    <string name="title_activity_map">Results on Map</string>
+    <string name="title_activity_dashboard2">Login</string>
+</resources>

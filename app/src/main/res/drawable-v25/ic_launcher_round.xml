@@ -1,0 +1,18 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item>
+    <!-- drawable/circle_card_icon.xml -->
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="oval">
+      <solid android:color="@color/colorPrimary"/>
+      <size
+          android:width="48dp"
+          android:height="48dp"/>
+    </shape>
+  </item>
+  <item
+      android:drawable="@drawable/ic_launcher_foreground"
+      android:top="-20dp"
+      android:bottom="-20dp"
+      android:left="-20dp"
+      android:right="-20dp"/>
+</layer-list>

@@ -1,0 +1,36 @@
+title GTC Toggle Device Tracking 'ON'
+
+participant "" as extern
+participant ": DeviceDetailsActivity" as DevDetAct
+participant ": connectivity.TrackingStateManager" as Manager
+participant "deviceState : DeviceTrackingState" as State
+participant DeviceTrackingStateStore as Store
+participant "trackingRequest : RegisterTrackedDeviceRequest" as Request
+
+
+note right of extern : user pushes button\n'Toggle Tracking'
+extern ->+ DevDetAct : 
+    DevDetAct ->+ Manager : toggleDeviceTrackingState(device : Device, tracking : boolean)
+        Manager ->+* State : new DeviceTrackingState(device, TrackingState.PENDING_START_TRACKING)
+        State -->- Manager : 
+        destroy State
+        Manager ->+ Store : add(deviceState)
+        Store -->- Manager : 
+        Manager ->+* Request : new RegisterTrackedDeviceRequest(hashedHardWareIdentifier : byte[])
+        Request -->- Manager : 
+        note over Manager : register EventListener
+        Manager ->>+ Request : send()
+        deactivate Manager
+        deactivate DevDetAct
+        
+        Request ->>+ Manager : onReceiveRegisterTrackedDeviceResult(response : ResponsePayload)
+        activate DevDetAct
+        destroy Request
+        note over Manager : request succeeded
+        Manager ->+* State : new DeviceTrackingState(device, TrackingState.TRACKING)
+        State --> Manager : 
+        destroy State
+        Manager ->+ Store : update(deviceState)
+        Store -->- Manager : 
+    Manager -->-DevDetAct : 
+DevDetAct -->- extern : 

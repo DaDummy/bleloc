@@ -1,0 +1,62 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Device Details
+
+
+participant ": DeviceDetailsActivity" as DeviceDetails
+participant "device : Device" as Device
+participant ": VendorDatabase" as VendorDatabase
+
+
+[-> DeviceDetails : onCreate(...)
+activate DeviceDetails
+	note over DeviceDetails
+		properties to be displayed:
+		* name (alias)
+		* vendor
+		* device type
+		* hardware identifier
+		* hashed hardware identifier
+	end note
+	
+	DeviceDetails -> Device : getAlias()
+	activate Device
+	DeviceDetails <-- Device : alias : String
+	deactivate Device
+	
+	DeviceDetails -> Device : getVendor()
+	activate Device
+		Device -> VendorDatabase : getVendorName(this.hardwareIdentifier)
+		activate VendorDatabase
+		Device <-- VendorDatabase : vendor : String
+		deactivate VendorDatabase
+	DeviceDetails <-- Device : vendor : String
+	deactivate Device
+	
+	DeviceDetails -> Device : getType()
+	activate Device
+		Device -> VendorDatabase : getDeviceType(this.hardwareIdentifier)
+		activate VendorDatabase
+		Device <-- VendorDatabase : deviceType : String
+		deactivate VendorDatabase
+	DeviceDetails <-- Device : deviceType : String
+	deactivate Device
+	
+	DeviceDetails -> Device : getHardwareIdentifier().toString()
+	activate Device
+	DeviceDetails <-- Device : hardwareIdentifier : String
+	deactivate Device
+	
+	DeviceDetails -> Device : getHashedHardwareIdentifier().toString()
+	activate Device
+	DeviceDetails <-- Device : hashedHardwareIdentifier : String
+	deactivate Device
+	
+	note over DeviceDetails : display data
+[<-- DeviceDetails
+deactivate DeviceDetails
+
+
+@enduml

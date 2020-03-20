@@ -1,0 +1,90 @@
+@startuml
+!include bleloc.uml-style
+
+
+title User-Account Login
+
+
+participant ": LoginActivity" as LoginActivity
+'participant "loginListener : LoginEventListener" as LoginListener
+participant ": Context" as Context
+participant "authManager : AuthenticationManager" as AuthManager
+participant "requestManager : RequestManager" as RequestManager
+participant "request : LoginRequest" as Request
+participant ": UserData" as UserData
+
+
+[-> LoginActivity
+activate LoginActivity
+note left : LoginActivity is displayed
+note over LoginActivity : register LoginEventListener
+note over LoginActivity : user enters valid account data\nand activates button 'Sign Up'
+	/'
+	create LoginListener
+	LoginActivity -> LoginListener
+	activate LoginListener
+	LoginActivity <-- LoginListener
+	deactivate LoginListener
+	'/
+	
+	LoginActivity -> Context : getAuthenticationManager()
+	activate Context
+	LoginActivity <-- Context : authManager
+	deactivate Context
+	
+	/'
+	LoginActivity -> AuthManager : registerListener(loginListener)
+	activate AuthManager
+	LoginActivity <-- AuthManager
+	deactivate AuthManager
+	'/
+	
+		LoginActivity ->> AuthManager : login(username : String, password : String)
+		activate AuthManager
+	note over AuthManager : Register EventListener
+		create Request
+		AuthManager -> Request
+		activate Request
+		AuthManager <-- Request
+		deactivate Request
+		
+		AuthManager -> RequestManager : this.requestManager.send(request)
+		activate RequestManager
+			RequestManager ->> Request : send()
+		deactivate RequestManager
+		
+		activate Request
+		... --   -- **""Wait for Server Response""** --   -- ...
+		AuthManager <<-- Request : onReceiveLoginDataResult(<U+1F36A> : String)
+		deactivate Request
+		
+		
+		
+		AuthManager -> UserData : setCookie(<U+1F36A>)
+		activate UserData
+		AuthManager <-- UserData
+		deactivate UserData
+		
+	
+	
+	
+	deactivate Context
+	
+	LoginActivity <<-- AuthManager :onReceiveLoginResult(result : AuthenticationResult)
+	deactivate AuthManager
+	
+	note over LoginActivity : de-register EventListener
+	/'
+	LoginActivity -> Context : deregisterListener(loginListener)
+	activate Context
+	LoginActivity <-- Context
+	deactivate Context
+	'/
+	
+[<-- LoginActivity
+deactivate LoginActivity
+note left : DashboardActivity is displayed
+destroy LoginActivity
+
+
+@enduml

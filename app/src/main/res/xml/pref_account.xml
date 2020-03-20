@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Account">
+        <Preference android:key="logOut" android:title="Log out"/>
+        <Preference android:key="changePassword" android:title="Change password"/>
+        <Preference android:key="deleteAccount" android:title="Delete account"/>
+    </PreferenceCategory>
+</PreferenceScreen>

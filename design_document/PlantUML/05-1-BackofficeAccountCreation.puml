@@ -1,0 +1,71 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Backoffice - Backoffice Account - Creation
+
+
+participant ": BackofficeAccountManagement" as BackofficeAccountManagement
+participant ": BackofficeAccountStore" as BackofficeAccountStore
+participant ": Authenticator" as Authenticator
+participant "otherAccount : BackofficeAccount" as BackofficeAccount
+
+[-> BackofficeAccountManagement : showCreateForm(cookie : Cookie)
+activate BackofficeAccountManagement
+	group This happens implicitly through a custom request filter annotation
+		BackofficeAccountManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		BackofficeAccountManagement <-- Authenticator
+		deactivate Authenticator
+		
+		BackofficeAccountManagement -> BackofficeAccountStore : account = get(accountId)
+		activate BackofficeAccountStore
+		BackofficeAccountManagement <-- BackofficeAccountStore
+		deactivate BackofficeAccountStore
+
+		alt account == null
+			[<-- BackofficeAccountManagement : return Response.seeOther("/auth/login").build()
+		end alt
+	end group
+
+	note over BackofficeAccountManagement : return standard create backoffice account page html form from template
+[<-- BackofficeAccountManagement
+deactivate BackofficeAccountManagement
+...
+[-> BackofficeAccountManagement : doCreate(cookie : Cookie, username : String, password : String)
+activate BackofficeAccountManagement
+	group This happens implicitly through a custom request filter annotation
+		BackofficeAccountManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		BackofficeAccountManagement <-- Authenticator
+		deactivate Authenticator
+		
+		BackofficeAccountManagement -> BackofficeAccountStore : account = get(accountId)
+		activate BackofficeAccountStore
+		BackofficeAccountManagement <-- BackofficeAccountStore
+		deactivate BackofficeAccountStore
+
+		alt account == null
+			[<-- BackofficeAccountManagement : return Response.seeOther("/auth/login").build()
+		end alt
+	end group
+
+	create BackofficeAccount
+	BackofficeAccountManagement -> BackofficeAccount : otherAccount = new BackofficeAccount(username, password)
+	activate BackofficeAccount
+	BackofficeAccountManagement <-- BackofficeAccount
+	deactivate BackofficeAccount
+	
+	BackofficeAccountManagement -> BackofficeAccountStore : add(otherAccount)
+	activate BackofficeAccountStore
+		note over BackofficeAccountStore : either succeeds and returns or throws an exception that is \ncaught and translated into an error response in the caller
+		note over BackofficeAccountStore : we assume success in this case
+	BackofficeAccountManagement <-- BackofficeAccountStore
+	deactivate BackofficeAccountStore
+	
+	note over BackofficeAccountManagement : otherAccount has been created
+[<-- BackofficeAccountManagement : return Response.seeOther("list").build()
+deactivate BackofficeAccountManagement
+
+
+@enduml

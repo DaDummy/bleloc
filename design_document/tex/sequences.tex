@@ -1,0 +1,154 @@
+\chapter{Sequence Diagrams}
+
+\definecolor{plantucolor0000}{RGB}{0,0,0}
+\definecolor{plantucolor0001}{RGB}{255,255,255}
+\definecolor{plantucolor0002}{RGB}{170,170,170}
+\definecolor{plantucolor0003}{RGB}{200,200,200}
+\definecolor{plantucolor0004}{RGB}{230,230,230}
+
+\section{Sequence 1: Initial startup}
+\resizebox{\linewidth}{!}{\input{PlantUML/01-1-InitalBackofficeAccountCreation}}
+
+Start the server to set up and create the first \gls{backoffice account}.
+
+
+\section{Sequence 2: Administrator authentication}
+\resizebox{\linewidth}{!}{\input{PlantUML/02-1-BackofficeAccountLogin}}
+
+Administrator logs in to \gls{backoffice account}.
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/02-2-BackofficeAccountLogout}}
+
+Administrator logs out of a \gls{backoffice account}.
+
+
+\section{Sequence 3: User registration}
+\resizebox{\linewidth}{!}{\input{PlantUML/03-1-UserAccountRegistration}}
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/03-1-UserAccountRegistration-ServerSide}}
+
+User registers an new \gls{user account}.
+
+\resizebox{\linewidth}{!}{\input{PlantUML/03-2-UserAccountDeletion-ServerSide}}
+
+User deletes his \gls{user account}.	
+
+\section{Sequence 4: User authentication}
+\includegraphics[width=\textwidth]{PlantUML/04-1-UserAccountLogin}
+
+User logs in to an \gls{user account}.
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/04-2-UserAccountLogout}}	
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/04-1-UserAccountLogin-ServerSide}}
+
+User logs out from the \gls{user account}.
+
+
+\section{Sequence 5: Administrator account management (Backoffice)}
+\resizebox{\linewidth}{!}{\input{PlantUML/05-1-BackofficeAccountCreation}}
+
+Administrator creates a new \gls{backoffice account} in the \gls{backoffice}.
+\\[12pt]
+\resizebox{\linewidth}{!}{\input{PlantUML/05-2-BackofficeAccountLookup}}
+
+Administrator views available information about \gls{backoffice account}.
+\\[12pt]
+\resizebox{\linewidth}{!}{\input{PlantUML/05-3-BackofficeAccountDeletion}}
+
+Administrator deletes a \gls{backoffice account}.
+
+\section{Sequence 6: User account management (Backoffice)}
+\resizebox{\linewidth}{!}{\input{PlantUML/06-1-BackofficeUserAccountCreation}}
+
+Administrator registers an \gls{user account} in the \gls{backoffice}.
+\\[12pt]
+\resizebox{\linewidth}{!}{\input{PlantUML/06-2-BackofficeUserAccountLookup}}
+
+Administrator views available information about \gls{user account}.
+\\[12pt]
+\resizebox{\linewidth}{!}{\input{PlantUML/06-3-BackofficeUserAccountDeletion}}
+
+Administrator deletes \gls{user account}.
+
+
+\section{Sequence 7: Device management}
+
+\resizebox{\linewidth}{!}{\input{PlantUML/07-1-DeviceRegistration}}
+
+User registers \glspl{beacon} to the app.
+\\[12pt]
+\resizebox{\linewidth}{!}{\input{PlantUML/07-2-DeviceList}}
+
+User views the list of registered \glspl{beacon}.
+\\[12pt]
+\resizebox{\linewidth}{!}{\input{PlantUML/07-3-DeviceDetails}}
+
+User views details about a \gls{beacon}.
+\\[12pt]
+\resizebox{\linewidth}{!}{\input{PlantUML/07-4-DeviceDeregistration}}
+
+User performs \gls{beacon} de-registration.
+
+
+\section{Sequence 8: Toggling Tracking}
+
+\resizebox{\linewidth}{!}{\input{PlantUML/08-1-DeviceToggleTrackingOn}}
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/08-1-DeviceToggleTrackingOn-ServerSide}}
+
+User toggles a \gls{beacon}'s tracking to active.
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/08-2-DeviceToggleTrackingOff}}
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/08-2-DeviceToggleTrackingOff-ServerSide}}
+
+User toggles a \gls{beacon}'s tracking to inactive.
+
+\section{Sequence 9: Device scanning}
+\resizebox{\linewidth}{!}{\input{PlantUML/09-1-Scan}}
+
+BT-Device scan.
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/09-2-LocationReport-ServerSide}}
+
+Client reports found device.
+
+
+\section{Sequence 10: Device location reporting}
+\resizebox{\linewidth}{!}{\input{PlantUML/10-1-LocationReceive-ServerSide-Download}}
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/10-1-LocationReceive-ServerSide-ConfirmDownload}}
+
+User receives new data on tracked device from server.
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/10-2-LocationView}}
+
+Viewing resulting location data.
+	
+\section{Sequence 11: User data sync}
+\resizebox{\linewidth}{!}{\input{PlantUML/11-1-UserDataSync}}
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/11-1-UserDataSync-ServerSide-GetIndex}}
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/11-1-UserDataSync-ServerSide-Add}}
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/11-1-UserDataSync-ServerSide-Get}}
+\\[12pt]
+
+\resizebox{\linewidth}{!}{\input{PlantUML/11-1-UserDataSync-ServerSide-Update}}
+
+User Account's private data sync

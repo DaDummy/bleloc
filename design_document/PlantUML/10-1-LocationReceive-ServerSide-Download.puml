@@ -1,0 +1,53 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Location Receive - Server Side - Download
+
+
+participant ": DeviceTracking" as DeviceTracking
+participant ": Authenticator" as Authenticator
+participant ": UserAccountStore" as UserAccountStore
+participant ": TrackingResultStore" as TrackingResultStore
+participant "responsePayload : DeviceTrackingResultPayload" as DeviceTrackingResultPayload
+
+
+[-> DeviceTracking : getResult(cookie : Cookie, n : long)
+activate DeviceTracking
+	group This happens implicitly through a custom JAX-RS request filter annotation
+		DeviceTracking -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		DeviceTracking <-- Authenticator
+		deactivate Authenticator
+		
+		DeviceTracking -> UserAccountStore : account = get(accountId)
+		activate UserAccountStore
+		DeviceTracking <-- UserAccountStore
+		deactivate UserAccountStore
+
+		alt account == null
+			[<- DeviceTracking : return Response.status(Response.Status.UNAUTHORIZED).build()
+		end alt
+	end group
+	
+	DeviceTracking -> TrackingResultStore : data : TrackingResult = getNthOldestByUserAccount(account, n)
+	activate TrackingResultStore
+	DeviceTracking <-- TrackingResultStore
+	deactivate TrackingResultStore
+	
+	alt data != null
+		create DeviceTrackingResultPayload
+		DeviceTracking -> DeviceTrackingResultPayload : responsePayload = new DeviceTrackingResultPayload(data)
+		activate DeviceTrackingResultPayload
+		DeviceTracking <-- DeviceTrackingResultPayload
+		deactivate DeviceTrackingResultPayload
+	
+[<-- DeviceTracking : return Response.ok(responsePayload).build()
+	else data == null
+[<-- DeviceTracking : return Response.status(Response.Status.NOT_FOUND).build()
+	end alt
+deactivate DeviceTracking
+
+
+
+@enduml

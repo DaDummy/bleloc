@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Resource usage">
+        <SwitchPreference android:key="backgroundScanning" android:title="Background scanning" android:defaultValue="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Miscellaneous">
+        <Preference android:key="mapProvider" android:title="Map provider"/>
+    </PreferenceCategory>
+</PreferenceScreen>

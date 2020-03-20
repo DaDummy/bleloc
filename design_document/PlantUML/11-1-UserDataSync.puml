@@ -1,0 +1,127 @@
+@startuml
+!include bleloc.uml-style
+
+
+title GTC Server Sync
+
+participant " : UserDataSyncManager" as UserDataSyncManager
+participant ": SynchronizableStore" as DataStore
+participant ": Packer" as Packer
+participant ": SynchronizableObject" as SynchronizableObject
+participant "indexRequest : UserDataSyncIndexRequest" as SyncRequest
+participant "addRequest : UserDataSyncAddRequest" as AddRequest
+participant "listTrackedRequest : ListTrackedDeviceRequest" as ListTrackedDeviceRequest
+participant "state : DeviceTrackingState" as DeviceTrackingState
+participant ": DeviceTrackingStateStore" as DeviceTrackingStateStore
+
+[->> UserDataSyncManager : triggerSync()
+activate UserDataSyncManager
+create SyncRequest
+UserDataSyncManager -> SyncRequest
+activate SyncRequest
+UserDataSyncManager <-- SyncRequest
+deactivate SyncRequest
+note over UserDataSyncManager : Register EventListener
+UserDataSyncManager ->> SyncRequest : send()
+activate SyncRequest
+loop foreach registered DataStores
+    UserDataSyncManager -> DataStore : getSyncIndex()
+	activate DataStore
+    UserDataSyncManager <-- DataStore : Set<SynchronizableObjectReference>
+	deactivate DataStore
+end
+deactivate UserDataSyncManager
+
+UserDataSyncManager <<- SyncRequest : onReceiveUserDataSyncIndex(response : UserDataSyncIndex)
+destroy SyncRequest
+activate UserDataSyncManager
+note over UserDataSyncManager : Compare local and server indices
+
+loop foreach object added on client side
+    UserDataSyncManager -> Packer : serialize(object : SynchronizableObjectReference)
+	activate Packer
+    note over Packer : Create and fill payload with id, timestamp and encrypted serialized object
+    UserDataSyncManager <-- Packer : payload : UserDataPayload
+	deactivate Packer
+	create AddRequest
+    UserDataSyncManager -> AddRequest : new UserDataSyncAddRequest(payload : UserDataPayload)
+	activate AddRequest
+    UserDataSyncManager <-- AddRequest
+	deactivate AddRequest
+    note over UserDataSyncManager : Register EventListener
+    UserDataSyncManager ->> AddRequest : send()
+    deactivate UserDataSyncManager
+	activate AddRequest
+    note over UserDataSyncManager : Wait for request result callback
+    UserDataSyncManager <<- AddRequest : onReceiveUserDataSyncAddResult(response: UserDataPayload)
+	deactivate AddRequest
+    activate UserDataSyncManager
+    destroy AddRequest
+    UserDataSyncManager -> Packer : deserialize(response)
+	activate Packer
+	create SynchronizableObject
+    Packer -> SynchronizableObject
+	activate SynchronizableObject
+    Packer <-- SynchronizableObject
+	deactivate SynchronizableObject
+    UserDataSyncManager <-- Packer : fullObject : SynchronizableObject
+	deactivate Packer
+    UserDataSyncManager -> SynchronizableObject : getDataStore()
+	activate SynchronizableObject
+    UserDataSyncManager <-- SynchronizableObject : SynchronizableStore
+	deactivate SynchronizableObject
+    UserDataSyncManager -> DataStore : update(fullObject)
+	activate DataStore
+    UserDataSyncManager <-- DataStore
+	deactivate DataStore
+    destroy SynchronizableObject
+end
+
+note over UserDataSyncManager : Repeat above loop in an analogous fashion\nfor the list of objects that are newer\non server than client and vice versa
+
+
+== update list of tracked devices ==
+	create ListTrackedDeviceRequest
+    UserDataSyncManager -> ListTrackedDeviceRequest
+	activate ListTrackedDeviceRequest
+    UserDataSyncManager <-- ListTrackedDeviceRequest
+	deactivate ListTrackedDeviceRequest
+note over UserDataSyncManager : Register EventListener
+    UserDataSyncManager -> ListTrackedDeviceRequest : send()
+    deactivate UserDataSyncManager
+	activate ListTrackedDeviceRequest
+    UserDataSyncManager <<-- ListTrackedDeviceRequest : onReceiveListTrackedDevicesResult(response : DeviceListResponsePayload)
+	deactivate ListTrackedDeviceRequest
+    destroy ListTrackedDeviceRequest
+    activate UserDataSyncManager
+	
+	UserDataSyncManager -> DeviceTrackingStateStore : clear()
+	activate DeviceTrackingStateStore
+	UserDataSyncManager <-- DeviceTrackingStateStore
+	deactivate DeviceTrackingStateStore
+loop foreach device in DeviceStore
+	create DeviceTrackingState
+	UserDataSyncManager -> DeviceTrackingState : new DeviceTrackingState(device, DeviceTrackingState::REGISTERED)
+	activate DeviceTrackingState
+	UserDataSyncManager <-- DeviceTrackingState
+	deactivate DeviceTrackingState
+	
+	alt if response.contains(device.getHashedHardwareIdentifier())
+		UserDataSyncManager -> DeviceTrackingState : setState(DeviceTrackingState::TRACKED)
+		activate DeviceTrackingState
+		UserDataSyncManager <-- DeviceTrackingState
+		deactivate DeviceTrackingState
+	end
+	
+    UserDataSyncManager -> DeviceTrackingStateStore : add(state)
+	activate DeviceTrackingStateStore
+    UserDataSyncManager <-- DeviceTrackingStateStore
+	deactivate DeviceTrackingStateStore
+end
+
+
+[<-- UserDataSyncManager
+deactivate UserDataSyncManager
+
+
+@enduml

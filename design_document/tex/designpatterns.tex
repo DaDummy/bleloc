@@ -1,0 +1,30 @@
+\chapter{Design Patterns}
+
+\section{Iterator}
+In the client model, there are entity store structures, such as \raw{DeviceStore} and \raw{LocationStore}. These stores implement the Iterator pattern to allow easy sequential access to their contents.
+
+The Iterator interface provided in \raw{java.util} is used.
+
+\section{Observer}
+The Observer pattern is used in many classes of the client design. 
+
+All classes within \raw{controller.activities} use the Observer interface to obtain updates of model classes.
+
+All listeners, such as those in \raw{model.connectivity.listeners} package, as well as those provided by the android framework are a kind of observer.
+
+For the Observer/Observable classes and interfaces the ones provided in \raw{java.util}  are used.
+
+\section{Strategy}
+For the serialization of user data the strategy pattern is being used.
+
+User data comes in different forms: Location Data and Device Data. In the future, more data may be added. This data has to be stored in a serialized, encrypted format in order to be available on multiple devices.
+
+\raw{UserDataSerializer} provides an interface for serializing and deserializing data. This is the Strategy interface. \raw{DeviceSerializer} and \raw{LocationSerializer} are concrete Strategy implementations. \raw{UserDataSerializationManager} is the context.
+
+Depending on the data object to be processed, \raw{UserDataSerializationManager} calls the corresponding strategy class to handle the serialization.
+
+\section{Abstract Factory}
+
+The abstract factory design pattern is used in the server model to offer extensible authentication options. The Client (or Server, in this case) does not have to know the specific factory or authenticator object being used. This allows to implement additional authentication options, such as ldap, google, facebook or microsoft login, and many more.
+
+The interface \raw{AuthenticatorFactory} is the Abstract Factory, \raw{Authenticator} the abstract product. One concrete product/factory pair is provided in the design: \raw{WebtokenAuthenticatorFactory} and \raw{WebtokenAuthenticator}.

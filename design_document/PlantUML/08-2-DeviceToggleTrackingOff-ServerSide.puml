@@ -1,0 +1,66 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Device - Toggle Tracking - Server Side
+
+
+participant ": DeviceManagement" as DeviceManagement
+participant ": Authenticator" as Authenticator
+participant ": UserAccountStore" as UserAccountStore
+participant ": DeviceStore" as DeviceStore
+participant ": TrackingResultStore" as TrackingResultStore
+participant ": DeviceHashTableManager" as DeviceHashTableManager
+participant "device : Device" as Device
+
+
+[-> DeviceManagement : deleteRegistryById(cookie : Cookie, hashedHardwareIdentifier : HashedMacAddress)
+activate DeviceManagement
+	group This happens implicitly through a custom JAX-RS request filter annotation
+		DeviceManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		DeviceManagement <-- Authenticator
+		deactivate Authenticator
+		
+		DeviceManagement -> UserAccountStore : account = get(accountId)
+		activate UserAccountStore
+		DeviceManagement <-- UserAccountStore
+		deactivate UserAccountStore
+
+		alt account == null
+			[<-- DeviceManagement : return Response.status(Response.Status.UNAUTHORIZED).build()
+		end alt
+	end group
+	
+	DeviceManagement -> DeviceStore : device = get(hashedHardwareIdentifier)
+	activate DeviceStore
+	DeviceManagement <-- DeviceStore
+	deactivate DeviceStore
+	
+	DeviceManagement -> DeviceStore : remove(device)
+	activate DeviceStore
+	alt device != null
+		DeviceStore -> TrackingResultStore : removeByDevice(device)
+		activate TrackingResultStore
+		DeviceStore <-- TrackingResultStore
+		deactivate TrackingResultStore
+		
+		note over DeviceStore : device is removed from DeviceStore
+		
+		DeviceStore -> DeviceHashTableManager : onRemoveDevice(device)
+		activate DeviceHashTableManager
+		note over DeviceHashTableManager : updates BloomFilter in BloomFilterStore
+		DeviceStore <-- DeviceHashTableManager
+		deactivate DeviceHashTableManager
+	end alt
+	DeviceManagement <-- DeviceStore
+	deactivate DeviceStore
+	destroy Device
+		
+	note over DeviceManagement : device tracking is now toggled off for this account-device combination
+[<-- DeviceManagement : return Response.ok().build()
+deactivate DeviceManagement
+
+
+
+@enduml

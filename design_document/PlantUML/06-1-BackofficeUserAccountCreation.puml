@@ -1,0 +1,72 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Backoffice - User Account - Creation
+
+
+participant ": UserAccountManagement" as UserAccountManagement
+participant ": BackofficeAccountStore" as BackofficeAccountStore
+participant ": Authenticator" as Authenticator
+participant ": UserAccountStore" as UserAccountStore
+participant "otherAccount : UserAccount" as UserAccount
+
+[-> UserAccountManagement : showCreateForm(cookie : Cookie)
+activate UserAccountManagement
+	group This happens implicitly through a custom request filter annotation
+		UserAccountManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		UserAccountManagement <-- Authenticator
+		deactivate Authenticator
+		
+		UserAccountManagement -> BackofficeAccountStore : account = get(accountId)
+		activate BackofficeAccountStore
+		UserAccountManagement <-- BackofficeAccountStore
+		deactivate BackofficeAccountStore
+
+		alt account == null
+			[<-- UserAccountManagement : return Response.seeOther("/auth/login").build()
+		end alt
+	end group
+
+	note over UserAccountManagement : return standard create backoffice account page html form from template
+[<-- UserAccountManagement
+deactivate UserAccountManagement
+...
+[-> UserAccountManagement : doCreate(cookie : Cookie, username : String, password : String)
+activate UserAccountManagement
+	group This happens implicitly through a custom request filter annotation
+		UserAccountManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		UserAccountManagement <-- Authenticator
+		deactivate Authenticator
+		
+		UserAccountManagement -> BackofficeAccountStore : account = get(accountId)
+		activate BackofficeAccountStore
+		UserAccountManagement <-- BackofficeAccountStore
+		deactivate BackofficeAccountStore
+
+		alt account == null
+			[<-- UserAccountManagement : return Response.seeOther("/auth/login").build()
+		end alt
+	end group
+
+	create UserAccount
+	UserAccountManagement -> UserAccount : otherAccount = new UserAccount(username, password)
+	activate UserAccount
+	UserAccountManagement <-- UserAccount
+	deactivate UserAccount
+	
+	UserAccountManagement -> UserAccountStore : add(otherAccount)
+	activate UserAccountStore
+		note over UserAccountStore : either succeeds and returns or throws an exception that is \ncaught and translated into an error response in the caller
+		note over UserAccountStore : we assume success in this case
+	UserAccountManagement <-- UserAccountStore
+	deactivate UserAccountStore
+	
+	note over UserAccountManagement : otherAccount has been created
+[<-- UserAccountManagement : return Response.seeOther("list").build()
+deactivate UserAccountManagement
+
+
+@enduml

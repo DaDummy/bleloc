@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+    version="2.0">
+
+    <persistence-unit name="blelocDB" transaction-type="JTA">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <jta-data-source>java:app/jdbc/blelocDB</jta-data-source>
+
+        <class>edu.kit.informatik.pse.bleloc.model.DeviceHashTable</class>
+        <class>edu.kit.informatik.pse.bleloc.model.UserAccount</class>
+        <class>edu.kit.informatik.pse.bleloc.model.BackofficeAccount</class>
+        <class>edu.kit.informatik.pse.bleloc.model.UserDataEntry</class>
+        <class>edu.kit.informatik.pse.bleloc.model.Device</class>
+        <class>edu.kit.informatik.pse.bleloc.model.TrackingResult</class>
+        <class>edu.kit.informatik.pse.bleloc.model.settings.Setting</class>
+
+        <properties>
+            <property name="hibernate.archive.autodetection" value="class" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect" />
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.default_schema" value="app"/>
+            <property name="hibernate.flushMode" value="COMMIT" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform" />
+            <!-- logging -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+            <property name="cache.providerclass" value="org.hibernate.NoCacheProvider"/>
+            <!-- schema generation -->
+            <!--
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.create-target" value="sampleCreate.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.drop-target" value="sampleDrop.ddl"/>
+            -->
+        </properties>
+    </persistence-unit>
+</persistence>

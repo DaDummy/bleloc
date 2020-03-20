@@ -1,0 +1,48 @@
+@startuml
+!include bleloc.uml-style
+
+
+title User-Account Registration
+
+
+participant ": SignUpActivity" as SignUpActivity
+participant "registrationListener : RegistrationEventListener" as RegistrationListener
+participant ": AuthenticationManager" as AuthenticationManager
+
+
+[-> SignUpActivity
+activate SignUpActivity
+note left : SignUpActivity is displayed
+note over SignUpActivity : user enters valid account data\nand activates button 'Sign Up'
+	create RegistrationListener
+	SignUpActivity -> RegistrationListener
+	activate RegistrationListener
+	SignUpActivity <-- RegistrationListener
+	deactivate RegistrationListener
+	
+	SignUpActivity -> AuthenticationManager : registerListener(registerationListener)
+	activate AuthenticationManager
+	SignUpActivity <-- AuthenticationManager
+	deactivate AuthenticationManager
+	
+	SignUpActivity ->> AuthenticationManager : register(username : String, password : String)
+	activate AuthenticationManager
+	...
+	SignUpActivity <<- AuthenticationManager : onReceiveRegistrationResult(result : AuthenticationResult)
+	deactivate AuthenticationManager
+	
+	SignUpActivity -> AuthenticationManager : deregisterListener(registerationListener)
+	activate AuthenticationManager
+	SignUpActivity <-- AuthenticationManager
+	deactivate AuthenticationManager
+	destroy RegistrationListener
+	
+	note over SignUpActivity : result is 'AuthenticationResult::SUCCESS'
+	ref over SignUpActivity : User Account Login
+[<-- SignUpActivity
+deactivate SignUpActivity
+note left : DashboardActivity is displayed
+destroy SignUpActivity
+
+
+@enduml

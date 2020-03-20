@@ -1,0 +1,27 @@
+\documentclass{scrreprt}
+\usepackage{style}
+\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
+\usepackage{enumitem}
+\usepackage[nonumberlist,toc,section=chapter,nopostdot]{glossaries}   
+\setglossarystyle{altlist}
+
+\hypersetup{
+	pdftitle={BLELoc Quality Assurance Document}
+}
+
+\input{./tex/glossary.tex}
+
+\begin{document}
+\input{./tex/title.tex}
+\maketitle
+\tableofcontents
+
+\input{./tex/.tex}
+\input{./tex/introduction.tex}
+\input{./tex/test_cases_testing.tex}
+\input{./tex/monkey_testing.tex}
+\input{./tex/hallway_testing.tex}
+\input{./tex/bug_report.tex}
+\input{./tex/log_list.tex}
+
+\end{document}

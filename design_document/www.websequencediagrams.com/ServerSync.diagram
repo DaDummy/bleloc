@@ -1,0 +1,83 @@
+title GTC Server Sync
+
+participant "" as extern
+participant " : UserDataSyncManager" as UserDataSyncManager
+participant ": SynchronizableStore" as DataStore
+participant ": Packer" as Packer
+#participant ": SynchronizableObjectReference" as SyncObjRef
+participant ": SynchronizableObject" as SynchronizableObject
+#participant ": UserDataSyncPayload" as UserDataSyncPayload
+participant "indexRequest : UserDataSyncIndexRequest" as SyncRequest
+#participant "getRequest : UserDataSyncGetRequest" as GetRequest
+participant "addRequest : UserDataSyncAddRequest" as AddRequest
+#participant "putRequest : UserDataSyncPutRequest" as PutRequest
+participant "listTrackedRequest : ListTrackedDeviceRequest" as ListTrackedDeviceRequest
+participant ": DeviceTrackingStateStore" as DeviceTrackingStateStore
+
+extern ->>+ UserDataSyncManager : triggerSync()
+UserDataSyncManager ->*+ SyncRequest :
+SyncRequest -->- UserDataSyncManager :
+note over UserDataSyncManager : Register EventListener
+UserDataSyncManager ->>+ SyncRequest : send()
+loop foreach registered DataStores
+    UserDataSyncManager ->+ DataStore : getSyncIndex()
+    DataStore -->- UserDataSyncManager : Set<SynchronizableObjectReference>
+end
+deactivate UserDataSyncManager
+
+SyncRequest ->>+ UserDataSyncManager : onReceiveUserDataSyncIndex(response : UserDataSyncIndex)
+destroy SyncRequest
+note over UserDataSyncManager : Compare local and server indices
+
+loop foreach object added on client side
+    UserDataSyncManager ->+ Packer : serialize(object : SynchronizableObjectReference)
+    #Packer ->*+ UserDataSyncPayload :
+    #UserDataSyncPayload -->- Packer :
+    note over Packer : Create and fill payload with id, timestamp and encrypted serialized object
+    Packer -->- UserDataSyncManager : payload : UserDataSyncPayload
+    UserDataSyncManager ->*+ AddRequest : new UserDataSyncAddRequest(payload : UserDataSyncPayload)
+    AddRequest -->- UserDataSyncManager :
+    note over UserDataSyncManager : Register EventListener
+    UserDataSyncManager ->>+ AddRequest : send()
+    deactivate UserDataSyncManager
+    note over UserDataSyncManager : Wait for request result callback
+    AddRequest ->>- UserDataSyncManager : onReceiveUserDataSyncAddResult(response: UserDataSyncPayload)
+    activate UserDataSyncManager
+    destroy AddRequest
+    UserDataSyncManager ->+ Packer : deserialize(response)
+    Packer ->*+ SynchronizableObject :
+    SynchronizableObject -->- Packer :
+    Packer -->- UserDataSyncManager : fullObject : SynchronizableObject
+    UserDataSyncManager ->+ SynchronizableObject : getDataStore()
+    SynchronizableObject -->- UserDataSyncManager : SynchronizableStore
+    UserDataSyncManager ->+ DataStore : update(fullObject)
+    DataStore -->- UserDataSyncManager :
+    destroy SynchronizableObject
+end
+
+note over UserDataSyncManager : Repeat above loop in an analogous fashion\nfor the list of objects that are newer\non server than client and vice versa
+
+
+note over UserDataSyncManager : update list of tracked devices
+    UserDataSyncManager ->+* ListTrackedDeviceRequest : 
+    ListTrackedDeviceRequest -->- UserDataSyncManager : 
+note over UserDataSyncManager : Register EventListener
+    UserDataSyncManager ->+ ListTrackedDeviceRequest : send()
+    deactivate UserDataSyncManager
+    ListTrackedDeviceRequest -->>- UserDataSyncManager : onReceiveListTrackedDevicesResult(response : UserDataSyncPayload)
+    destroy ListTrackedDeviceRequest
+    activate UserDataSyncManager
+    UserDataSyncManager ->+ Packer : deserialize(response)
+        Packer ->*+ SynchronizableObject :
+        SynchronizableObject -->- Packer :
+    Packer -->- UserDataSyncManager : fullObject : SynchronizableObject
+    UserDataSyncManager ->+ SynchronizableObject : getDataStore()
+    SynchronizableObject -->- UserDataSyncManager : SynchronizableStore
+    destroy SynchronizableObject
+loop foreach element
+    UserDataSyncManager ->+ DeviceTrackingStateStore : update(element : DeviceTrackingState)
+    DeviceTrackingStateStore -->- UserDataSyncManager :
+end
+
+
+UserDataSyncManager -->- extern : 

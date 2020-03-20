@@ -1,0 +1,37 @@
+// Server model library project
+
+buildscript {
+	repositories {
+		google()
+		jcenter()
+	}
+}
+
+apply plugin: 'java'
+
+dependencies {
+	compile project(path: ':common')
+
+	compileOnly 'javax.inject:javax.inject:1'
+	compileOnly 'javax.annotation:javax.annotation-api:1.2'
+	compileOnly 'javax.enterprise:cdi-api:2.0'
+
+	// JWT for JSON Web Tokens
+	compile 'io.jsonwebtoken:jjwt-api:0.10.5'
+	runtime 'io.jsonwebtoken:jjwt-impl:0.10.5'
+	runtime 'io.jsonwebtoken:jjwt-jackson:0.10.5'
+	testImplementation 'io.jsonwebtoken:jjwt-impl:0.10.5'
+	testImplementation 'io.jsonwebtoken:jjwt-jackson:0.10.5'
+
+	// JUnit 4
+	testImplementation 'junit:junit:4.12'
+
+	//Persistence
+	compileOnly 'javax.persistence:javax.persistence-api:2.2'
+	compile 'org.hibernate:hibernate-core:5.4.1.Final'
+	testCompile group: 'org.apache.derby', name: 'derby', version: '10.14.2.0'
+}
+
+test {
+	systemProperty 'derby.stream.error.field', 'java.lang.System.err'
+}

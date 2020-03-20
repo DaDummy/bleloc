@@ -1,0 +1,73 @@
+@startuml
+!include bleloc.uml-style
+
+
+title User Account - Deletion - Server Side
+
+
+participant ": UserAccountManagement" as UserAccountManagement
+participant ": UserAccountStore" as UserAccountStore
+participant ": Authenticator" as Authenticator
+participant "account : UserAccount" as UserAccount
+participant ": DeviceStore" as DeviceStore
+participant ": TrackingResultStore" as TrackingResultStore
+participant ": DeviceHashTableManager" as DeviceHashTableManager
+participant ": UserDataStore" as UserDataStore
+
+
+[-> UserAccountManagement : postDelete(cookie : Cookie)
+activate UserAccountManagement
+	group This happens implicitly through a custom JAX-RS request filter annotation
+		UserAccountManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		UserAccountManagement <-- Authenticator
+		deactivate Authenticator
+		
+		UserAccountManagement -> UserAccountStore : account = get(accountId)
+		activate UserAccountStore
+		UserAccountManagement <-- UserAccountStore
+		deactivate UserAccountStore
+
+		alt account == null
+			[<-- UserAccountManagement : return Response.status(Response.Status.UNAUTHORIZED).build()
+		end alt
+	end group
+	
+	UserAccountManagement -> UserAccountStore : remove(account)
+	activate UserAccountStore
+	alt account != null
+		UserAccountStore -> DeviceStore : removeByUserAccount(account)
+		activate DeviceStore
+		loop for each affected device : Device
+			DeviceStore -> TrackingResultStore : removeByDevice(device)
+			activate TrackingResultStore
+			DeviceStore <-- TrackingResultStore
+			deactivate TrackingResultStore
+			
+			DeviceStore -> DeviceHashTableManager : onRemoveDevice(device)
+			activate DeviceHashTableManager
+			note over DeviceHashTableManager : updates BloomFilter in BloomFilterStore
+			DeviceStore <-- DeviceHashTableManager
+			deactivate DeviceHashTableManager
+			
+			note over DeviceStore : device is removed from DeviceStore
+		end alt
+		UserAccountStore <-- DeviceStore
+		deactivate DeviceStore
+
+		UserAccountStore -> UserDataStore : removeByUserAccount(account)
+		activate UserDataStore
+		UserAccountStore <-- UserDataStore
+		deactivate UserDataStore
+	end alt
+	UserAccountManagement <-- UserAccountStore
+	deactivate UserAccountStore
+	destroy UserAccount
+
+	note over UserAccountManagement : account is now logged out
+	note over UserAccountManagement : account is now deleted
+[<-- UserAccountManagement : return Response.ok().build()
+deactivate UserAccountManagement
+
+
+@enduml

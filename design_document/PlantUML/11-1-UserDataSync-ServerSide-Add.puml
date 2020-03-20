@@ -1,0 +1,56 @@
+@startuml
+!include bleloc.uml-style
+
+
+title UserAccount Data Sync - Server Side - Add
+
+
+participant ": UserDataSynchronization" as UserDataSync
+participant ": Authenticator" as Authenticator
+participant ": UserAccountStore" as UserAccountStore
+participant ": UserDataStore" as UserDataStore
+participant "data : UserDataEntry" as UserDataEntry
+participant "responsePayload : UserDataPayload" as UserDataPayload
+
+
+[-> UserDataSync : postAddData(cookie : Cookie, payload : UserDataPayload)
+activate UserDataSync
+	group This happens implicitly through a custom JAX-RS request filter annotation
+		UserDataSync -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		UserDataSync <-- Authenticator
+		deactivate Authenticator
+		
+		UserDataSync -> UserAccountStore : account = get(accountId)
+		activate UserAccountStore
+		UserDataSync <-- UserAccountStore
+		deactivate UserAccountStore
+
+		alt account == null
+			[<- UserDataSync : return Response.status(Response.Status.UNAUTHORIZED).build()
+		end alt
+	end group
+	
+	create UserDataEntry
+	UserDataSync -> UserDataEntry : data = new UserDataEntry(payload, account)
+	activate UserDataEntry
+	UserDataSync <-- UserDataEntry
+	deactivate UserDataEntry
+	
+	UserDataSync -> UserDataStore : add(data)
+	activate UserDataStore
+	UserDataSync <-- UserDataStore
+	deactivate UserDataStore
+	
+	create UserDataPayload
+	UserDataSync -> UserDataPayload : responsePayload = new UserDataPayload(data)
+	activate UserDataPayload
+	UserDataSync <-- UserDataPayload
+	deactivate UserDataPayload
+
+[<-- UserDataSync : return Response.ok(responsePayload).build()
+deactivate UserDataSync
+
+
+
+@enduml

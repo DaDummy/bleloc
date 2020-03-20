@@ -1,0 +1,40 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Device List
+
+
+participant ": DashboardActivity" as Dashboard
+participant ": DeviceStore" as DeviceStore
+participant "device : Device" as Device
+participant ": DeviceTrackingStateStore" as TrackingStore
+
+
+[-> Dashboard : onCreate(...)
+activate Dashboard
+	note over Dashboard, DeviceStore : loop over store via Iterable interface
+	loop foreach device in DeviceStore
+		create Device
+		Dashboard -> Device : ""//created by loop from iterator//""
+		
+		Dashboard -> Device : getAlias()
+		activate Device
+		Dashboard <-- Device : deviceName : String
+		deactivate Device
+		
+		Dashboard -> TrackingStore : getByDevice(device).getState()
+		activate TrackingStore
+		Dashboard <-- TrackingStore : trackingState : TrackingState
+		deactivate TrackingStore
+		
+		note over Dashboard : list devices by name and\ndisplay their tracking state
+		
+		Dashboard <-- Device : ""//end of loop//""
+		destroy Device
+	end
+[<-- Dashboard
+deactivate Dashboard
+
+
+@enduml

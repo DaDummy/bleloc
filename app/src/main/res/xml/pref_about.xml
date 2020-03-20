@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="About">
+        <Preference
+            android:key="pref_static_field_key"
+            android:selectable="false"
+            android:persistent="false"
+            android:summary="This project is developed as part of Software Engineering Practices (PSE) course at Karlsruhe Institute of Technology, Chair of Embedded Systems in Wintersemester 2018/19.&#10;&#10;Supervisor: Tanfer Alan&#10;&#10;BLELoc team: Christoffer Anselm, Florian Gilges, Anastasiia Zhyliak, Elena Astankow, Lukas Lihotzki"/>
+    </PreferenceCategory>
+</PreferenceScreen>

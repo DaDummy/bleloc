@@ -1,0 +1,75 @@
+// Backoffice build
+
+buildscript {
+	repositories {
+		google()
+		jcenter()
+	}
+}
+
+plugins {
+	id "ch.mollusca.glassfish.http.deployer" version "0.3.0"
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+group = "edu.kit.informatik.pse.bleloc.backoffice"
+version = "1.0.0-SNAPSHOT"
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+defaultTasks 'redeploy'
+
+deploy.dependsOn war
+
+task redeploy {
+	group = 'deployment'
+	finalizedBy deploy
+
+	doFirst {
+		try {
+			undeploy.execute()
+		}
+		catch (Exception e) {
+			println "undeploy task failed - this happens if the web app was not currently deployed on the server and shouldn't really cause an error"
+			println "continuing..."
+		}
+	}
+}
+
+dependencies {
+	implementation project(path: ':server-model')
+
+	// Java EE APIs we depend upon
+	providedCompile 'javax.ws.rs:javax.ws.rs-api:2.1'
+	providedCompile 'javax.servlet:javax.servlet-api:4.0.0'
+	providedCompile 'javax.inject:javax.inject:1'
+	providedCompile 'javax.annotation:javax.annotation-api:1.2'
+	providedCompile 'javax.enterprise:cdi-api:2.0'
+	providedCompile 'javax.ejb:javax.ejb-api:3.2'
+
+	// CDI glue for compatibility with jersey container
+	providedCompile 'org.glassfish.jersey.ext.cdi:jersey-cdi1x:2.26'
+
+	// jersey-mvc-freemarker
+	compile 'org.glassfish.jersey.ext:jersey-mvc-freemarker:2.27'
+
+	// JUnit 4
+	testImplementation 'junit:junit:4.12'
+
+	// Persistence
+	providedCompile 'javax.persistence:javax.persistence-api:2.2'
+	testCompile group: 'org.apache.derby', name: 'derby', version: '10.14.2.0'
+}
+
+test {
+	systemProperty 'derby.stream.error.field', 'java.lang.System.err'
+}
+
+http_deployer {
+	deploymentArchive = war.archivePath
+	scheme = "http"
+	contextRoot = 'backoffice'
+	applicationName = 'bleloc-backoffice'
+}

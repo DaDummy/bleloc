@@ -1,0 +1,37 @@
+
+
+skinparam backgroundColor #FFFFFF
+skinparam handwritten false
+
+skinparam sequence {
+	Title {
+		FontSize 35
+		FontStyle Monospace
+	}
+	
+	ArrowColor #000000
+	ActorBorderColor #000000
+	LifeLineBorderColor #000000
+	LifeLineBackgroundColor LightGrey
+	
+	ParticipantBorderColor #000000
+	ParticipantBackgroundColor #EEEEEE
+	ParticipantFontName Arial
+	ParticipantFontSize 20
+	ParticipantFontColor #000000
+	
+	ActorBackgroundColor LightGrey
+	ActorFontColor #000000
+	ActorFontSize 20
+	ActorFontName Arial
+	
+	Delay {
+		FontSize 20
+	}
+}
+
+skinparam Note {
+	BackgroundColor #EFEFEF
+	FontColor Black
+	BorderColor Black
+}

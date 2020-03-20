@@ -1,0 +1,29 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Device Deregistration
+
+participant ": DeviceDetailsActivity" as DeviceDetails
+participant "trackingStateStore : DeviceTrackingStateStore" as DeviceTrackingStateStore
+participant ": DeviceStore" as DeviceStore
+
+[-> DeviceDetails
+note left : user pushes button\n'delete device' in device details
+activate DeviceDetails
+    DeviceDetails -> DeviceTrackingStateStore : getByDevice(device).getState()
+	activate DeviceTrackingStateStore
+	DeviceDetails <-- DeviceTrackingStateStore : trackingState
+	deactivate DeviceTrackingStateStore
+	
+	note over DeviceDetails : enure, tracking is not enabled\n(see 08-2 Toggle Tracking Off)
+	
+	DeviceDetails -> DeviceStore : delete(device)
+	activate DeviceStore
+	DeviceDetails <-- DeviceStore
+	deactivate DeviceStore
+[<-- DeviceDetails
+deactivate DeviceDetails
+
+
+@enduml

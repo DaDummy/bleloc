@@ -1,0 +1,32 @@
+\documentclass{scrreprt}
+\usepackage{style}
+\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
+\usepackage{enumitem}
+\usepackage[nonumberlist,toc,section=chapter,nopostdot]{glossaries}     % provides glossary commands
+\setglossarystyle{altlist}
+
+\hypersetup{
+	pdftitle={BLELoc Design Document}
+}
+
+\input{./tex/glossary.tex}
+
+\begin{document}
+\input{./tex/title.tex}
+\maketitle
+\tableofcontents
+
+%\input{./tex/overview.tex}
+\input{./tex/components.tex}
+\input{./tex/classdescription.tex}
+\input{./tex/umlclassdiagram.tex}
+\input{./tex/designpatterns.tex}
+\input{./tex/sequences.tex}
+%\input{./tex/schemas.tex}
+%\input{./tex/protocols.tex}
+\input{./tex/reqchanges.tex}
+\input{./tex/workschedule.tex}
+
+
+%\printnoidxglossaries
+\end{document}

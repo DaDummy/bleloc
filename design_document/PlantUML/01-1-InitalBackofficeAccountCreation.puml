@@ -1,0 +1,41 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Initial Backoffice Account Creation
+
+
+participant ": BackofficeAccountInitializer" as BackofficeAccountInitializer
+participant ": BackofficeAccountStore" as BackofficeAccountStore
+participant "account : BackofficeAccount" as BackofficeAccount
+
+
+[-> BackofficeAccountInitializer : contextInitialized(event : ServletContextEvent)
+activate BackofficeAccountInitializer
+	BackofficeAccountInitializer -> BackofficeAccountStore : count = getCount()
+	activate BackofficeAccountStore
+	BackofficeAccountInitializer <-- BackofficeAccountStore
+	deactivate BackofficeAccountStore
+	
+	alt count == 0
+		note over BackofficeAccountInitializer : generate random password into variable 'password'
+		note over BackofficeAccountInitializer : write backoffice account credentials to log
+		
+		create BackofficeAccount
+		BackofficeAccountInitializer -> BackofficeAccount : account = new BackofficeAccount("administrator", password)
+		activate BackofficeAccount
+		BackofficeAccountInitializer <-- BackofficeAccount
+		deactivate BackofficeAccount
+		
+		BackofficeAccountInitializer -> BackofficeAccountStore : add(account)
+		activate BackofficeAccountStore
+		BackofficeAccountInitializer <-- BackofficeAccountStore
+		deactivate BackofficeAccountStore
+	end alt
+[<-- BackofficeAccountInitializer
+deactivate BackofficeAccountInitializer
+
+note over BackofficeAccountInitializer : backoffice account account has been created
+
+
+@enduml

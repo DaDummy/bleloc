@@ -1,0 +1,42 @@
+\chapter{Project Schedule}
+\begin{adjustbox}{totalheight=\textheight-2\baselineskip}
+\begin{ganttchart}{10}{29}
+\gantttitle{Day}{20} \\
+\gantttitlelist{10,...,29}{1} \\
+\ganttgroup{Phase 1}{10}{14} \\
+\ganttbar{Runnable app and backend}{10}{12} \\
+\ganttbar{Server-side Authentication}{10}{14} \\
+\ganttbar{Server-side Persistence: 1st store}{10}{14} \\
+\ganttbar{Payload classes}{10}{14} \\
+\ganttbar{Serve pages in backoffice}{10}{14} \\
+\ganttbar{Integrate BloomFilter}{10}{14} \\
+\ganttgroup{Phase 2}{15}{21} \\
+\ganttbar{Clean-up project}{15}{15} \\
+\ganttbar{Server-side Persistence}{15}{18} \\
+\ganttbar{Remaining parts in Server model}{15}{20} \\
+\ganttbar{Integrate JS Graph into Statistics page}{15}{20} \\
+\ganttbar{backoffice.controller (Initial account)}{15}{18} \\
+\ganttbar{Remaining backoffice}{15}{20} \\
+\ganttbar{backend.controller}{15}{20} \\
+\ganttbar{Set up on KIT server}{17}{21} \\
+\ganttbar{client.model.scanning}{15}{21} \\
+\ganttbar{client.model.device}{15}{21} \\
+\ganttbar{client.model.devicehashtable}{15}{21} \\
+\ganttgroup{Phase 3}{22}{29} \\
+\ganttbar{client.model.connectivity}{22}{29} \\
+\ganttbar{client.model.serialize}{22}{29} \\
+\ganttbar{client.model.settings}{22}{29} \\ % missing methods?
+\ganttbar{client.model.user}{22}{29} \\
+\ganttbar{client.model.utils.Encryptor}{22}{29} \\
+\ganttbar{client.model.utils.PeriodicExecutor}{22}{29} \\
+\ganttbar{client.controller.activities and views}{22}{29}
+\ganttlink{elem3}{elem9}
+\ganttlink{elem3}{elem15}
+\ganttlink{elem5}{elem11}
+\ganttlink{elem5}{elem13}
+\ganttlink{elem14}{elem20}
+\ganttlink{elem15}{elem20}
+\ganttlink{elem14}{elem21}
+\ganttlink{elem15}{elem21}
+\end{ganttchart}
+\end{adjustbox}

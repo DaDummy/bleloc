@@ -1,0 +1,49 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Backoffice - User Account - Deletion
+
+
+participant ": UserAccountManagement" as UserAccountManagement
+participant ": BackofficeAccountStore" as BackofficeAccountStore
+participant ": Authenticator" as Authenticator
+participant ": UserAccountStore" as UserAccountStore
+participant "otherAccount : UserAccount" as UserAccount
+
+[-> UserAccountManagement : doDelete(cookie : Cookie, username : String)
+activate UserAccountManagement
+	group This happens implicitly through a custom request filter annotation
+		UserAccountManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		UserAccountManagement <-- Authenticator
+		deactivate Authenticator
+		
+		UserAccountManagement -> BackofficeAccountStore : account = get(accountId)
+		activate BackofficeAccountStore
+		UserAccountManagement <-- BackofficeAccountStore
+		deactivate BackofficeAccountStore
+
+		alt account == null
+			[<-- UserAccountManagement : return Response.seeOther("/auth/login").build()
+		end alt
+	end group
+
+	UserAccountManagement -> UserAccountStore : otherAccount = get(username)
+	activate UserAccountStore
+	UserAccountManagement <-- UserAccountStore
+	deactivate UserAccountStore
+	
+	UserAccountManagement -> UserAccountStore : remove(otherAccount)
+	activate UserAccountStore
+		note over UserAccountStore : otherAccount is removed from store
+	UserAccountManagement <-- UserAccountStore
+	deactivate UserAccountStore
+	destroy UserAccount
+
+	note over UserAccountManagement : otherAccount has been deleted
+[<-- UserAccountManagement : return Response.seeOther("list").build()
+deactivate UserAccountManagement
+
+
+@enduml

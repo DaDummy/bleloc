@@ -1,0 +1,45 @@
+@startuml
+!include bleloc.uml-style
+
+
+title User Account - Registration - Server Side
+
+
+participant ": UserAccountManagement" as UserAccountManagement
+participant ": UserAccountStore" as UserAccountStore
+participant ": Authenticator" as Authenticator
+participant "account : UserAccount" as UserAccount
+
+
+[-> UserAccountManagement : postRegister(credentials : LoginCredentials)
+activate UserAccountManagement
+	create UserAccount
+	UserAccountManagement -> UserAccount : account = new UserAccount(credentials.getName(), credentials.getPassword())
+	activate UserAccount
+	UserAccountManagement <-- UserAccount
+	deactivate UserAccount
+	
+	UserAccountManagement -> UserAccountStore : add(account)
+	activate UserAccountStore
+	note over UserAccountStore : either succeeds and returns or throws an exception that is \ncaught and translated into an error response in the caller
+	note over UserAccountStore : we assume success in this case
+	UserAccountManagement <-- UserAccountStore
+	deactivate UserAccountStore
+	
+	UserAccountManagement -> UserAccount : accountId = getId()
+	activate UserAccount
+	UserAccountManagement <-- UserAccount
+	deactivate UserAccount
+	
+	UserAccountManagement -> Authenticator : cookie = createCookie(accountId)
+	activate Authenticator
+	UserAccountManagement <-- Authenticator
+	deactivate Authenticator
+		
+	note over UserAccountManagement : account now is registered
+	note over UserAccountManagement : account is now logged in
+[<-- UserAccountManagement : return Response.ok().cookie(cookie).build()
+deactivate UserAccountManagement
+
+
+@enduml

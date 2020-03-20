@@ -1,0 +1,52 @@
+@startuml
+!include bleloc.uml-style
+
+
+title Backoffice - Backoffice Account - Deletion
+
+
+participant ": BackofficeAccountManagement" as BackofficeAccountManagement
+participant ": BackofficeAccountStore" as BackofficeAccountStore
+participant ": Authenticator" as Authenticator
+participant "otherAccount : BackofficeAccount" as BackofficeAccount
+
+[-> BackofficeAccountManagement : doDelete(cookie : Cookie, username : String)
+activate BackofficeAccountManagement
+	group This happens implicitly through a custom request filter annotation
+		BackofficeAccountManagement -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		BackofficeAccountManagement <-- Authenticator
+		deactivate Authenticator
+		
+		BackofficeAccountManagement -> BackofficeAccountStore : account = get(accountId)
+		activate BackofficeAccountStore
+		BackofficeAccountManagement <-- BackofficeAccountStore
+		deactivate BackofficeAccountStore
+
+		alt account == null
+			[<-- BackofficeAccountManagement : return Response.seeOther("/auth/login").build()
+		end alt
+	end group
+
+	BackofficeAccountManagement -> BackofficeAccountStore : otherAccount = get(username)
+	activate BackofficeAccountStore
+	BackofficeAccountManagement <-- BackofficeAccountStore
+	deactivate BackofficeAccountStore
+	
+	alt account.equals(otherAccount) == false
+		BackofficeAccountManagement -> BackofficeAccountStore : remove(otherAccount)
+		activate BackofficeAccountStore
+			note over BackofficeAccountStore : otherAccount is removed from store
+		BackofficeAccountManagement <-- BackofficeAccountStore
+		deactivate BackofficeAccountStore
+		destroy BackofficeAccount
+	
+		note over BackofficeAccountManagement : otherAccount has been deleted
+[<-- BackofficeAccountManagement : return Response.seeOther("list").build()
+	else account.equals(otherAccount) == true
+		note over BackofficeAccountManagement : The account details page is shown again with an error message that you cannot delete your own account
+	end alt
+deactivate BackofficeAccountManagement
+
+
+@enduml

@@ -1,0 +1,49 @@
+@startuml
+!include bleloc.uml-style
+
+
+title UserAccount Data Sync - Server Side - Get Index
+
+
+participant ": UserDataSynchronization" as UserDataSync
+participant ": Authenticator" as Authenticator
+participant ": UserAccountStore" as UserAccountStore
+participant ": UserDataStore" as UserDataStore
+participant "responsePayload : UserDataIndexPayload" as UserDataIndexPayload
+
+
+[-> UserDataSync : getDataIndex(cookie : Cookie)
+activate UserDataSync
+	group This happens implicitly through a custom JAX-RS request filter annotation
+		UserDataSync -> Authenticator : accountId = verifyCookie(cookie)
+		activate Authenticator
+		UserDataSync <-- Authenticator
+		deactivate Authenticator
+		
+		UserDataSync -> UserAccountStore : account = get(accountId)
+		activate UserAccountStore
+		UserDataSync <-- UserAccountStore
+		deactivate UserAccountStore
+
+		alt account == null
+			[<- UserDataSync : return Response.status(Response.Status.UNAUTHORIZED).build()
+		end alt
+	end group
+	
+	UserDataSync -> UserDataStore : index : Collection<UserDataIndexEntry> = getIndexByUserAccount(account)
+	activate UserDataStore
+	UserDataSync <-- UserDataStore
+	deactivate UserDataStore
+	
+	create UserDataIndexPayload
+	UserDataSync -> UserDataIndexPayload : responsePayload = new UserDataIndexPayload(index)
+	activate UserDataIndexPayload
+	UserDataSync <-- UserDataIndexPayload
+	deactivate UserDataIndexPayload
+	
+[<-- UserDataSync : return Response.ok(responsePayload).build()
+deactivate UserDataSync
+
+
+
+@enduml

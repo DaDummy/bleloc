@@ -1,0 +1,18 @@
+// Backend build
+
+buildscript {
+	repositories {
+		google()
+		jcenter()
+	}
+}
+
+apply plugin: 'java'
+
+dependencies {
+	// guava for bloom filter implementation
+	compile 'com.google.guava:guava:27.0.1-jre'
+
+	// JUnit 4
+	testImplementation 'junit:junit:4.12'
+}

@@ -1,0 +1,3 @@
+:: set "JAVA_HOME=C:\Program Files\Java\jre1.8.0_191"
+:: set "PATH=%JAVA_HOME%\bin;%PATH%"
+:: set "ASADMIN=%BASEDIR%\..\glassfish5\bin\asadmin.bat"
